@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParvozSIM — Mobil ilova dizayni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#0a84ff;
+    --brand-d:#0066d6;
+    --brand-grad:linear-gradient(135deg,#33a8ff 0%,#0a84ff 55%,#0066d6 100%);
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#eef1f5;
+    --bg:#f4f6fa;
+    --ok:#16a34a;
+    --warn:#f59e0b;
+    --danger:#ef4444;
+    --radius:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 20% -5%,#1b2a4a 0%,#0b1426 45%,#070d18 100%);
+    color:#e7ecf5;padding:48px 28px 80px;
+  }
+  .board-head{max-width:1200px;margin:0 auto 40px;text-align:center}
+  .logo-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:14px}
+  .logo-badge{width:54px;height:54px;border-radius:16px;background:var(--brand-grad);display:grid;place-items:center;box-shadow:0 10px 30px rgba(10,132,255,.45)}
+  .logo-badge svg{width:30px;height:30px}
+  .board-head h1{font-size:30px;font-weight:800;letter-spacing:-.5px}
+  .board-head p{color:#9fb0cb;margin-top:10px;font-size:15px;max-width:680px;margin-inline:auto;line-height:1.6}
+  .legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:6px 14px;border-radius:999px;font-size:12.5px;color:#cdd8ec}
+
+  .board{display:flex;flex-wrap:wrap;gap:46px 38px;justify-content:center;max-width:1500px;margin:0 auto}
+  .frame-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .caption{font-size:13px;color:#9fb0cb;font-weight:500}
+  .caption b{color:#fff;font-weight:600;display:block;font-size:14px}
+
+  /* Phone frame */
+  .phone{
+    width:330px;height:712px;background:#000;border-radius:46px;padding:11px;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,.6),0 0 0 2px #1c2433, inset 0 0 0 2px #2b3445;
+    position:relative;flex:none;
+  }
+  .screen{width:100%;height:100%;background:var(--bg);border-radius:36px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+  .notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#000;border-radius:0 0 16px 16px;z-index:50}
+  /* status bar */
+  .status{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:13px;font-weight:600;color:var(--ink);z-index:20}
+  .status.on-brand{color:#fff}
+  .status .dots{display:flex;align-items:center;gap:5px}
+  .status .bat{width:22px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative;opacity:.9}
+  .status .bat::after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:currentColor;border-radius:1px}
+  .status .bat i{position:absolute;inset:1.5px;width:65%;background:currentColor;border-radius:1px;display:block}
+
+  .body{flex:1;overflow:hidden;display:flex;flex-direction:column}
+  .scroll{flex:1;overflow:hidden;padding:0 18px}
+
+  /* tab bar */
+  .tabbar{flex:none;height:74px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:flex-start;padding-top:11px;box-shadow:0 -6px 24px rgba(15,23,42,.05)}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:#9aa6ba;font-weight:600}
+  .tab svg{width:23px;height:23px;stroke:#9aa6ba;fill:none;stroke-width:1.9}
+  .tab.active{color:var(--brand)}
+  .tab.active svg{stroke:var(--brand)}
+
+  /* generic */
+  .h-pad{padding:6px 2px 14px}
+  .title-lg{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.4px}
+  .sub{font-size:13px;color:var(--muted)}
+  .card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 4px 18px rgba(15,23,42,.05)}
+  .pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600}
+  .row{display:flex;align-items:center}
+  .between{justify-content:space-between}
+  .gap8{gap:8px}.gap12{gap:12px}
+  .flag{font-size:26px;line-height:1}
+  .price{font-weight:800;color:var(--ink)}
+  .muted{color:var(--muted)}
+  .btn{display:block;width:100%;text-align:center;background:var(--brand-grad);color:#fff;font-weight:700;padding:15px;border-radius:16px;font-size:15px;border:none;box-shadow:0 12px 24px -8px rgba(10,132,255,.6)}
+  .btn-ghost{background:#eef4ff;color:var(--brand);box-shadow:none}
+  .search{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:13px 15px;color:#9aa6ba;font-size:14px;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+  .search svg{width:18px;height:18px;stroke:#9aa6ba;fill:none;stroke-width:2}
+
+  /* hero header */
+  .hero{background:var(--brand-grad);padding:8px 20px 26px;border-radius:0 0 28px 28px;color:#fff}
+  .balance-card{background:rgba(255,255,255,.16);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:16px;color:#fff}
+
+  /* country chips */
+  .scroller{display:flex;gap:12px;overflow:hidden;padding:2px}
+  .dest{flex:none;width:118px;background:#fff;border-radius:16px;padding:14px;box-shadow:0 4px 16px rgba(15,23,42,.06)}
+  .dest .flag{font-size:30px}
+
+  /* usage ring */
+  .ring{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;
+    background:conic-gradient(var(--brand) var(--p,72%),#e8edf5 0);}
+  .ring .inner{width:92px;height:92px;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center}
+
+  /* QR */
+  .qr{width:150px;height:150px;border-radius:14px;padding:10px;background:#fff;box-shadow:0 6px 20px rgba(15,23,42,.1)}
+  .qr svg{width:100%;height:100%}
+
+  /* list item */
+  .li{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .li:last-child{border-bottom:none}
+  .ico{width:42px;height:42px;border-radius:12px;background:#eef4ff;display:grid;place-items:center;flex:none}
+  .ico svg{width:20px;height:20px;stroke:var(--brand);fill:none;stroke-width:2}
+
+  /* onboarding */
+  .ob{background:var(--brand-grad);height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:34px 26px 40px;color:#fff;position:relative;overflow:hidden}
+  .ob .globe{position:absolute;top:60px;left:50%;transform:translateX(-50%);font-size:150px;opacity:.92;filter:drop-shadow(0 20px 40px rgba(0,0,0,.3))}
+  .ob h2{font-size:30px;font-weight:800;line-height:1.15;letter-spacing:-.5px}
+  .ob p{color:rgba(255,255,255,.85);margin-top:12px;font-size:14.5px;line-height:1.6}
+  .dots3{display:flex;gap:7px;margin:26px 0 22px}
+  .dots3 i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4)}
+  .dots3 i.on{width:22px;background:#fff;border-radius:999px}
+
+  /* otp */
+  .otp{display:flex;gap:10px;justify-content:space-between}
+  .otp .cell{flex:1;height:56px;border:1.5px solid var(--line);border-radius:14px;display:grid;place-items:center;font-size:22px;font-weight:700;color:var(--ink);background:#fff}
+  .otp .cell.on{border-color:var(--brand);box-shadow:0 0 0 3px rgba(10,132,255,.12)}
+
+  .label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:7px}
+  .field{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 15px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:8px}
+
+  .pay{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+  .pay.sel{border-color:var(--brand);box-shadow:0 0 0 3px rgba(10,132,255,.1)}
+  .pay .radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--brand);display:grid;place-items:center;margin-left:auto}
+  .pay .radio i{width:10px;height:10px;border-radius:50%;background:var(--brand)}
+  .brandmark{width:40px;height:26px;border-radius:5px;display:grid;place-items:center;font-size:9px;font-weight:800;color:#fff}
+
+  .success-ico{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:grid;place-items:center;box-shadow:0 16px 36px -8px rgba(22,163,74,.5)}
+  .success-ico svg{width:48px;height:48px;stroke:#fff;stroke-width:3;fill:none}
+  .lang{display:flex;gap:8px}
+  .lang span{padding:6px 13px;border-radius:10px;font-size:13px;font-weight:600;background:#fff;color:var(--muted);border:1px solid var(--line)}
+  .lang span.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .sec-h{font-size:15px;font-weight:700;color:var(--ink);margin:18px 2px 12px}
+  .mini{font-size:11px}
+</style>
+</head>
+<body>
+
+<div class="board-head">
+  <div class="logo-row">
+    <div class="logo-badge">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 13h5l-1 9 9-12h-5l2-8z" fill="#fff"/></svg>
+    </div>
+    <h1>ParvozSIM — Mobil ilova</h1>
+  </div>
+  <p>eSIM marketplace mijoz ilovasi · Dizayn konsepsiyasi (UI mockup). Sayohatchilar 200+ davlat uchun internet paketlarini sotib oladi, eSIM'ni o'rnatadi va sarfini kuzatadi.</p>
+  <div class="legend">
+    <span class="chip">🎨 iOS / Android moslashuvchan</span>
+    <span class="chip">🇺🇿 UZ / RU / EN</span>
+    <span class="chip">💳 Uzcard · Humo</span>
+    <span class="chip">📶 11 ta ekran</span>
+  </div>
+</div>
+
+<div class="board">
+
+  <!-- 1. ONBOARDING -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="ob">
+        <div class="globe">🌍</div>
+        <div class="dots3"><i class="on"></i><i></i><i></i></div>
+        <h2>Dunyo bo'ylab<br>internetga ulaning</h2>
+        <p>Plastik SIM kartasiz. 200+ davlatda bir necha soniyada eSIM o'rnating va sayohatda doimo aloqada bo'ling.</p>
+        <button class="btn" style="background:#fff;color:var(--brand);margin-top:26px;box-shadow:none">Boshlash</button>
+        <p style="text-align:center;margin-top:16px;font-size:13px">Akkauntingiz bormi? <b style="color:#fff">Kirish</b></p>
+      </div>
+    </div></div>
+    <div class="caption"><b>1 · Onboarding</b>Birinchi ochilish</div>
+  </div>
+
+  <!-- 2. LOGIN / OTP -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body"><div class="scroll">
+        <div class="h-pad" style="padding-top:24px">
+          <div class="title-lg">Telefon raqamingiz</div>
+          <div class="sub" style="margin-top:8px">+998 90 ••• raqamiga SMS-kod yuboramiz</div>
+        </div>
+        <div class="label">Telefon raqami</div>
+        <div class="field" style="margin-bottom:24px"><b style="color:var(--ink)">🇺🇿 +998</b><span style="color:var(--ink)">90 123 45 67</span></div>
+
+        <div class="label">Tasdiqlash kodi</div>
+        <div class="otp" style="margin-bottom:14px">
+          <div class="cell on">5</div><div class="cell">2</div><div class="cell">9</div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        </div>
+        <div class="sub" style="text-align:center;margin-bottom:26px">Kodni qayta yuborish · <b style="color:var(--brand)">00:42</b></div>
+        <button class="btn">Tasdiqlash</button>
+        <p class="sub" style="text-align:center;margin-top:18px;line-height:1.5">Davom etib, siz <b style="color:var(--ink)">Foydalanish shartlari</b> bilan rozilik bildirasiz</p>
+      </div></div>
+    </div></div>
+    <div class="caption"><b>2 · Kirish (OTP)</b>Telefon + SMS kod</div>
+  </div>
+
+  <!-- 3. HOME -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status on-brand"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body">
+        <div class="hero">
+          <div class="row between" style="margin-bottom:16px">
+            <div><div style="font-size:13px;opacity:.85">Assalomu alaykum 👋</div><div style="font-size:18px;font-weight:700">Jahongir</div></div>
+            <div class="lang"><span class="on" style="background:rgba(255,255,255,.25);color:#fff;border:none">UZ</span></div>
+          </div>
+          <div class="balance-card">
+            <div class="row between" style="margin-bottom:6px"><div style="font-size:12px;opacity:.9">📶 Faol eSIM · Turkiya 🇹🇷</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff">11 kun qoldi</span></div>
+            <div class="row between" style="align-items:flex-end"><div style="font-size:24px;font-weight:800">1.8 <span style="font-size:14px;font-weight:600;opacity:.85">GB qoldi</span></div><span style="font-size:12px;opacity:.85">3 GB dan</span></div>
+            <div style="height:6px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-top:10px"><div style="width:60%;height:100%;background:#fff"></div></div>
+          </div>
+        </div>
+        <div class="scroll" style="padding-top:16px">
+          <div class="search" style="margin-bottom:20px"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> Davlat yoki mintaqani qidiring</div>
+
+          <div class="row between"><div class="sec-h" style="margin:0">🔥 Ommabop yo'nalishlar</div><span class="mini muted" style="font-weight:600">Barchasi</span></div>
+          <div class="scroller" style="margin-top:12px">
+            <div class="dest"><div class="flag">🇹🇷</div><div style="font-weight:700;margin-top:8px;font-size:14px;color:var(--ink)">Turkiya</div><div class="mini muted" style="margin-top:2px">12 ta paket</div><div class="price mini" style="margin-top:6px;color:var(--brand)">28 000 UZS dan</div></div>
+            <div class="dest"><div class="flag">🇦🇪</div><div style="font-weight:700;margin-top:8px;font-size:14px;color:var(--ink)">BAA</div><div class="mini muted" style="margin-top:2px">9 ta paket</div><div class="price mini" style="margin-top:6px;color:var(--brand)">35 000 UZS dan</div></div>
+            <div class="dest"><div class="flag">🇹🇭</div><div style="font-weight:700;margin-top:8px;font-size:14px;color:var(--ink)">Tailand</div></div>
+          </div>
+
+          <div class="sec-h">🌐 Mintaqaviy paketlar</div>
+          <div class="card row gap12" style="margin-bottom:12px">
+            <div class="flag" style="font-size:30px">🇪🇺</div>
+            <div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yevropa · 36 davlat</div><div class="mini muted">5 GB · 30 kun</div></div>
+            <div class="price">149 000</div>
+          </div>
+          <div class="card row gap12">
+            <div class="flag" style="font-size:30px">🌏</div>
+            <div style="flex:1"><div style="font-weight:700;color:var(--ink)">Osiyo · 18 davlat</div><div class="mini muted">10 GB · 30 kun</div></div>
+            <div class="price">189 000</div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="tab active"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Bosh sahifa</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/></svg>eSIMlar</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6z"/><path d="M9 12h7M9 16h7"/></svg>Buyurtmalar</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profil</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="caption"><b>3 · Bosh sahifa</b>Faol eSIM · qidiruv · ommabop</div>
+  </div>
+
+  <!-- 4. COUNTRY PACKAGES -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body"><div class="scroll">
+        <div class="h-pad row gap12" style="padding-top:18px">
+          <div style="font-size:20px">‹</div>
+          <div class="flag" style="font-size:34px">🇹🇷</div>
+          <div><div class="title-lg" style="font-size:20px">Turkiya</div><div class="mini muted">Local eSIM · 4G/5G</div></div>
+        </div>
+
+        <div class="row gap8" style="margin-bottom:16px">
+          <span class="pill" style="background:var(--brand);color:#fff">Barchasi</span>
+          <span class="pill" style="background:#fff;color:var(--muted)">1–3 GB</span>
+          <span class="pill" style="background:#fff;color:var(--muted)">5+ GB</span>
+          <span class="pill" style="background:#fff;color:var(--muted)">Cheksiz</span>
+        </div>
+
+        <div class="card" style="border:1.5px solid var(--brand);margin-bottom:12px">
+          <div class="row between">
+            <div><div style="font-weight:800;color:var(--ink);font-size:17px">3 GB</div><div class="mini muted">15 kun amal qiladi</div></div>
+            <span class="pill" style="background:#fff5e6;color:var(--warn)">⭐ Ommabop</span>
+          </div>
+          <div class="row between" style="margin-top:14px;align-items:flex-end">
+            <div class="price" style="font-size:20px">42 000 <span class="mini muted">UZS</span></div>
+            <button class="pill" style="background:var(--brand-grad);color:#fff;padding:9px 18px">Tanlash</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:12px">
+          <div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">1 GB</div><div class="mini muted">7 kun</div></div></div>
+          <div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">28 000 <span class="mini muted">UZS</span></div><button class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</button></div>
+        </div>
+        <div class="card">
+          <div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">10 GB</div><div class="mini muted">30 kun</div></div></div>
+          <div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">98 000 <span class="mini muted">UZS</span></div><button class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</button></div>
+        </div>
+      </div></div>
+    </div></div>
+    <div class="caption"><b>4 · Davlat paketlari</b>Filtr · narxlar</div>
+  </div>
+
+  <!-- 5. PACKAGE DETAIL / CHECKOUT -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body"><div class="scroll">
+        <div class="h-pad row gap12" style="padding-top:18px"><div style="font-size:20px">‹</div><div class="title-lg" style="font-size:19px">Paket tafsiloti</div></div>
+
+        <div class="card" style="margin-bottom:16px;text-align:center;background:var(--brand-grad);color:#fff">
+          <div class="flag" style="font-size:40px">🇹🇷</div>
+          <div style="font-size:30px;font-weight:800;margin-top:6px">3 GB</div>
+          <div style="opacity:.85">Turkiya · 15 kun</div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Tezlik</div><div class="mini muted">4G / 5G, FUP'gacha to'liq tezlik</div></div></div>
+          <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Faollashtirish</div><div class="mini muted">O'rnatilgandan so'ng / birinchi ulanishda</div></div></div>
+          <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Qo'llab-quvvatlash</div><div class="mini muted">24/7 yordam · eSIM o'rnatishda yordam</div></div></div>
+        </div>
+
+        <div class="card">
+          <div class="row between mini" style="margin-bottom:8px"><span class="muted">Paket narxi</span><span style="color:var(--ink);font-weight:600">42 000 UZS</span></div>
+          <div class="row between mini" style="margin-bottom:10px"><span class="muted">Xizmat haqi</span><span style="color:var(--ink);font-weight:600">0 UZS</span></div>
+          <div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">Jami</span><span class="price" style="font-size:18px">42 000 UZS</span></div>
+        </div>
+      </div>
+      <div style="padding:14px 18px 18px;background:var(--bg)"><button class="btn">Sotib olish · 42 000 UZS</button></div>
+      </div>
+    </div></div>
+    <div class="caption"><b>5 · Paket tafsiloti</b>Xususiyatlar · jami</div>
+  </div>
+
+  <!-- 6. PAYMENT -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body"><div class="scroll">
+        <div class="h-pad row gap12" style="padding-top:18px"><div style="font-size:20px">‹</div><div class="title-lg" style="font-size:19px">To'lov usuli</div></div>
+
+        <div class="label">To'lov turini tanlang</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+          <div class="pay sel"><div class="brandmark" style="background:linear-gradient(135deg,#00a3e0,#0061a8)">UZ<br>CARD</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Uzcard</div><div class="mini muted">8600 •••• •••• 4821</div></div><div class="radio"><i></i></div></div>
+          <div class="pay"><div class="brandmark" style="background:linear-gradient(135deg,#16a34a,#0f7a37)">HU<br>MO</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Humo</div><div class="mini muted">9860 •••• •••• 1132</div></div><div class="radio" style="border-color:#cbd5e1"></div></div>
+          <div class="pay" style="border-style:dashed"><div class="brandmark" style="background:#eef4ff;color:var(--brand);font-size:18px">+</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Yangi karta qo'shish</div><div class="mini muted">Uzcard yoki Humo</div></div></div>
+        </div>
+
+        <div class="card">
+          <div class="row gap12" style="margin-bottom:12px"><div class="flag">🇹🇷</div><div style="flex:1"><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">15 kun</div></div></div>
+          <div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">To'lanadi</span><span class="price" style="font-size:18px">42 000 UZS</span></div>
+        </div>
+      </div>
+      <div style="padding:14px 18px 18px;background:var(--bg)"><button class="btn">🔒 Xavfsiz to'lash</button></div>
+      </div>
+    </div></div>
+    <div class="caption"><b>6 · To'lov</b>Uzcard · Humo · karta</div>
+  </div>
+
+  <!-- 7. SUCCESS -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body"><div class="scroll" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:0">
+        <div class="success-ico"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="title-lg" style="margin-top:26px">To'lov muvaffaqiyatli!</div>
+        <p class="sub" style="margin-top:10px;line-height:1.6;padding:0 20px">eSIM tayyor. Endi uni qurilmangizga o'rnating va internetdan foydalaning.</p>
+        <div class="card" style="width:100%;margin-top:24px;text-align:left">
+          <div class="row between mini" style="margin-bottom:8px"><span class="muted">Buyurtma</span><span style="color:var(--ink);font-weight:600">ORD-20260604-77310</span></div>
+          <div class="row between mini" style="margin-bottom:8px"><span class="muted">Paket</span><span style="color:var(--ink);font-weight:600">Turkiya · 3 GB</span></div>
+          <div class="row between mini"><span class="muted">To'landi</span><span style="color:var(--ok);font-weight:700">42 000 UZS</span></div>
+        </div>
+      </div>
+      <div style="padding:14px 18px 18px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn">eSIM'ni o'rnatish</button>
+        <button class="btn btn-ghost">Bosh sahifaga</button>
+      </div>
+      </div>
+    </div></div>
+    <div class="caption"><b>7 · Muvaffaqiyat</b>Buyurtma tasdig'i</div>
+  </div>
+
+  <!-- 8. MY ESIMS -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body">
+        <div class="scroll" style="padding-top:18px">
+          <div class="h-pad"><div class="title-lg">Mening eSIMlarim</div></div>
+          <div class="row gap8" style="margin-bottom:16px">
+            <span class="pill" style="background:var(--brand);color:#fff">Faol</span>
+            <span class="pill" style="background:#fff;color:var(--muted)">Arxiv</span>
+          </div>
+
+          <div class="card" style="margin-bottom:14px">
+            <div class="row between" style="margin-bottom:14px">
+              <div class="row gap12"><div class="flag" style="font-size:30px">🇹🇷</div><div><div style="font-weight:700;color:var(--ink)">Turkiya · 3 GB</div><div class="mini muted">15 kundan 11 kun qoldi</div></div></div>
+              <span class="pill" style="background:#e7f8ee;color:var(--ok)">● Faol</span>
+            </div>
+            <div style="background:#f1f5fb;border-radius:12px;padding:12px">
+              <div class="row between mini" style="margin-bottom:7px"><span class="muted">Sarflangan</span><span style="color:var(--ink);font-weight:700">1.2 / 3 GB</span></div>
+              <div style="height:8px;background:#dfe7f2;border-radius:99px;overflow:hidden"><div style="width:40%;height:100%;background:var(--brand-grad)"></div></div>
+            </div>
+            <button class="btn btn-ghost" style="margin-top:14px;padding:12px">Tafsilotlar</button>
+          </div>
+
+          <div class="card" style="opacity:.92">
+            <div class="row between">
+              <div class="row gap12"><div class="flag" style="font-size:30px">🇦🇪</div><div><div style="font-weight:700;color:var(--ink)">BAA · 5 GB</div><div class="mini muted">2 kundan keyin tugaydi</div></div></div>
+              <span class="pill" style="background:#fff5e6;color:var(--warn)">● Tugayapti</span>
+            </div>
+            <div style="background:#f1f5fb;border-radius:12px;padding:12px;margin-top:12px">
+              <div class="row between mini" style="margin-bottom:7px"><span class="muted">Sarflangan</span><span style="color:var(--ink);font-weight:700">4.6 / 5 GB</span></div>
+              <div style="height:8px;background:#dfe7f2;border-radius:99px;overflow:hidden"><div style="width:92%;height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="tab"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Bosh sahifa</div>
+          <div class="tab active"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/></svg>eSIMlar</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6z"/><path d="M9 12h7M9 16h7"/></svg>Buyurtmalar</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profil</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="caption"><b>8 · Mening eSIMlarim</b>Sarf · holat</div>
+  </div>
+
+  <!-- 9. ESIM DETAIL / QR -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body"><div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div style="font-size:20px">‹</div><div class="title-lg" style="font-size:19px">Turkiya · 3 GB</div></div>
+
+        <div class="card" style="text-align:center;margin-bottom:16px">
+          <div class="ring" style="--p:40%;margin:6px auto 0"><div class="inner"><div><div class="price" style="font-size:22px">1.8</div><div class="mini muted">GB qoldi</div></div></div></div>
+          <div class="mini muted" style="margin-top:12px">3 GB dan 1.2 GB sarflandi · 11 kun</div>
+        </div>
+
+        <div class="card" style="text-align:center;margin-bottom:16px">
+          <div style="font-weight:700;color:var(--ink);margin-bottom:12px">eSIM'ni o'rnatish</div>
+          <div class="qr" style="margin:0 auto">
+            <svg viewBox="0 0 100 100" shape-rendering="crispEdges"><rect width="100" height="100" fill="#fff"/>
+            <g fill="#0f172a">
+            <rect x="6" y="6" width="22" height="22"/><rect x="12" y="12" width="10" height="10" fill="#fff"/>
+            <rect x="72" y="6" width="22" height="22"/><rect x="78" y="12" width="10" height="10" fill="#fff"/>
+            <rect x="6" y="72" width="22" height="22"/><rect x="12" y="78" width="10" height="10" fill="#fff"/>
+            <rect x="36" y="6" width="6" height="6"/><rect x="48" y="6" width="6" height="6"/><rect x="60" y="12" width="6" height="6"/>
+            <rect x="36" y="18" width="6" height="6"/><rect x="54" y="18" width="6" height="6"/><rect x="36" y="36" width="6" height="6"/>
+            <rect x="48" y="36" width="6" height="6"/><rect x="60" y="36" width="6" height="6"/><rect x="72" y="36" width="6" height="6"/><rect x="84" y="36" width="6" height="6"/>
+            <rect x="6" y="36" width="6" height="6"/><rect x="18" y="36" width="6" height="6"/><rect x="36" y="48" width="6" height="6"/><rect x="60" y="48" width="6" height="6"/>
+            <rect x="84" y="48" width="6" height="6"/><rect x="48" y="60" width="6" height="6"/><rect x="72" y="60" width="6" height="6"/><rect x="36" y="72" width="6" height="6"/>
+            <rect x="48" y="72" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="84" y="72" width="6" height="6"/><rect x="60" y="84" width="6" height="6"/><rect x="48" y="84" width="6" height="6"/><rect x="84" y="84" width="6" height="6"/>
+            </g></svg>
+          </div>
+          <div class="mini muted" style="margin-top:12px">Sozlamalar → Mobil aloqa → eSIM qo'shish</div>
+          <button class="btn btn-ghost" style="margin-top:14px;padding:12px">Qo'lda kod kiritish</button>
+        </div>
+      </div></div>
+    </div></div>
+    <div class="caption"><b>9 · eSIM tafsiloti</b>QR · o'rnatish</div>
+  </div>
+
+  <!-- 10. ORDERS HISTORY -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body">
+        <div class="scroll" style="padding-top:18px">
+          <div class="h-pad"><div class="title-lg">Buyurtmalar</div></div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="row between"><div class="row gap12"><div class="flag">🇹🇷</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">04.06.2026 · ORD-...77310</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div>
+            <div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Uzcard</span><span class="price">42 000 UZS</span></div>
+          </div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="row between"><div class="row gap12"><div class="flag">🇦🇪</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">BAA · 5 GB</div><div class="mini muted">28.05.2026</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div>
+            <div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Humo</span><span class="price">95 000 UZS</span></div>
+          </div>
+          <div class="card">
+            <div class="row between"><div class="row gap12"><div class="flag">🇦🇲</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Armaniston · 3 GB</div><div class="mini muted">01.06.2026</div></div></div><span class="pill" style="background:#fde8e8;color:var(--danger)">Xato</span></div>
+            <div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini" style="color:var(--danger);font-weight:600">To'lov amalga oshmadi · Qaytadan urinish</span></div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="tab"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Bosh sahifa</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/></svg>eSIMlar</div>
+          <div class="tab active"><svg viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6z"/><path d="M9 12h7M9 16h7"/></svg>Buyurtmalar</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profil</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="caption"><b>10 · Buyurtmalar tarixi</b>Holat · qayta urinish</div>
+  </div>
+
+  <!-- 11. PROFILE -->
+  <div class="frame-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="status on-brand"><span>9:41</span><span class="dots">📶 <span class="bat"><i></i></span></span></div>
+      <div class="body">
+        <div class="hero" style="padding-bottom:30px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+            <div style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px;font-weight:800">J</div>
+            <div style="text-align:center"><div style="font-size:18px;font-weight:700">Jahongir Karimov</div><div style="opacity:.85;font-size:13px">+998 90 123 45 67</div></div>
+          </div>
+        </div>
+        <div class="scroll" style="padding-top:16px">
+          <div class="card" style="margin-bottom:16px">
+            <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Mening kartalarim</div></div><div class="muted mini" style="font-weight:600">2 ta karta ›</div></div>
+            <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l2 5 5 .5-4 3.5 1 5-4-2.5L7 16l1-5-4-3.5 5-.5z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Bonuslarim</div></div><div class="muted mini" style="font-weight:600">2 400 ball</div></div>
+          </div>
+
+          <div class="label" style="margin-left:2px">Til / Language</div>
+          <div class="lang" style="margin-bottom:16px"><span class="on">O'zbekcha</span><span>Русский</span><span>English</span></div>
+
+          <div class="card">
+            <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Yordam markazi</div><span class="muted">›</span></div>
+            <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5l-1 4z"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Qo'llab-quvvatlash</div><span class="muted">›</span></div>
+            <div class="li"><div class="ico" style="background:#fde8e8"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><path d="M16 17l5-5-5-5M21 12H9M9 4H5v16h4"/></svg></div><div style="flex:1;font-weight:600;color:var(--danger);font-size:14px">Chiqish</div></div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="tab"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Bosh sahifa</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/></svg>eSIMlar</div>
+          <div class="tab"><svg viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6z"/><path d="M9 12h7M9 16h7"/></svg>Buyurtmalar</div>
+          <div class="tab active"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profil</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="caption"><b>11 · Profil</b>Kartalar · til · sozlamalar</div>
+  </div>
+
+</div>
+</body>
+</html>

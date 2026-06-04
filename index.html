@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParvozSIM — Interaktiv prototip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#0a84ff;--brand-d:#0066d6;
+    --brand-grad:linear-gradient(135deg,#33a8ff 0%,#0a84ff 55%,#0066d6 100%);
+    --ink:#0f172a;--muted:#64748b;--line:#eef1f5;--bg:#f4f6fa;
+    --ok:#16a34a;--warn:#f59e0b;--danger:#ef4444;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+  body{font-family:'Inter',system-ui,sans-serif;
+    background:radial-gradient(1200px 700px at 50% -10%,#1b2a4a 0%,#0b1426 50%,#070d18 100%);
+    color:#e7ecf5;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:34px 18px 60px}
+  .head{text-align:center;margin-bottom:26px}
+  .logo-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px}
+  .logo-badge{width:46px;height:46px;border-radius:14px;background:var(--brand-grad);display:grid;place-items:center;box-shadow:0 8px 24px rgba(10,132,255,.45)}
+  .logo-badge svg{width:26px;height:26px}
+  .head h1{font-size:23px;font-weight:800;letter-spacing:-.4px}
+  .head p{color:#9fb0cb;margin-top:7px;font-size:13.5px}
+  .hint{display:inline-flex;align-items:center;gap:8px;background:rgba(10,132,255,.16);border:1px solid rgba(10,132,255,.35);color:#bcd9ff;padding:7px 15px;border-radius:999px;font-size:12.5px;margin-top:14px}
+  .reset{margin-top:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#cdd8ec;padding:7px 16px;border-radius:999px;font-size:12.5px;cursor:pointer}
+
+  /* phone */
+  .phone{width:344px;height:740px;background:#000;border-radius:48px;padding:11px;
+    box-shadow:0 50px 90px -25px rgba(0,0,0,.7),0 0 0 2px #1c2433,inset 0 0 0 2px #2b3445;position:relative}
+  .notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:27px;background:#000;border-radius:0 0 17px 17px;z-index:90}
+  .viewport{width:100%;height:100%;background:var(--bg);border-radius:37px;overflow:hidden;position:relative}
+
+  .page{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;visibility:hidden;
+    transform:translateX(24px);transition:opacity .28s ease,transform .28s ease;pointer-events:none}
+  .page.active{opacity:1;visibility:visible;transform:translateX(0);pointer-events:auto}
+
+  .status{height:46px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 28px;font-size:13px;font-weight:600;color:var(--ink);z-index:20;padding-top:6px}
+  .status.on-brand{color:#fff}
+  .bat{display:inline-block;width:22px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative;opacity:.9;vertical-align:middle}
+  .bat::after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:currentColor;border-radius:1px}
+  .bat i{position:absolute;inset:1.5px;width:65%;background:currentColor;border-radius:1px;display:block}
+
+  .scroll{flex:1;overflow-y:auto;padding:0 18px}
+  .scroll::-webkit-scrollbar{width:0}
+  .foot{flex:none;padding:12px 18px 20px;background:var(--bg)}
+  .foot.col{display:flex;flex-direction:column;gap:10px}
+
+  .tabbar{flex:none;height:74px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:flex-start;padding-top:11px;box-shadow:0 -6px 24px rgba(15,23,42,.05)}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:#9aa6ba;font-weight:600;cursor:pointer;flex:1}
+  .tab svg{width:23px;height:23px;stroke:#9aa6ba;fill:none;stroke-width:1.9}
+  .tab.active{color:var(--brand)}.tab.active svg{stroke:var(--brand)}
+  .tab:active{opacity:.6}
+
+  .h-pad{padding:8px 2px 14px}
+  .title-lg{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.4px}
+  .sub{font-size:13px;color:var(--muted)}
+  .card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 4px 18px rgba(15,23,42,.05)}
+  .pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600}
+  .row{display:flex;align-items:center}.between{justify-content:space-between}
+  .gap8{gap:8px}.gap12{gap:12px}
+  .flag{font-size:26px;line-height:1}
+  .price{font-weight:800;color:var(--ink)}.muted{color:var(--muted)}.mini{font-size:11px}
+  .btn{display:block;width:100%;text-align:center;background:var(--brand-grad);color:#fff;font-weight:700;padding:15px;border-radius:16px;font-size:15px;border:none;box-shadow:0 12px 24px -8px rgba(10,132,255,.6);cursor:pointer}
+  .btn:active{transform:scale(.98)}
+  .btn-ghost{background:#eef4ff;color:var(--brand);box-shadow:none}
+  .tap{cursor:pointer;transition:transform .1s}.tap:active{transform:scale(.97)}
+  .back{font-size:22px;cursor:pointer;width:30px;color:var(--ink)}
+  .search{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:13px 15px;color:#9aa6ba;font-size:14px;box-shadow:0 4px 14px rgba(15,23,42,.05);cursor:pointer}
+  .search svg{width:18px;height:18px;stroke:#9aa6ba;fill:none;stroke-width:2}
+  .hero{background:var(--brand-grad);padding:8px 20px 26px;border-radius:0 0 28px 28px;color:#fff}
+  .balance-card{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:16px;color:#fff}
+  .scroller{display:flex;gap:12px;overflow-x:auto;padding:2px 0 6px}
+  .scroller::-webkit-scrollbar{height:0}
+  .dest{flex:none;width:120px;background:#fff;border-radius:16px;padding:14px;box-shadow:0 4px 16px rgba(15,23,42,.06);cursor:pointer}
+  .ring{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--brand) var(--p,72%),#e8edf5 0)}
+  .ring .inner{width:92px;height:92px;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center}
+  .qr{width:150px;height:150px;border-radius:14px;padding:10px;background:#fff;box-shadow:0 6px 20px rgba(15,23,42,.1)}
+  .qr svg{width:100%;height:100%}
+  .li{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .li:last-child{border-bottom:none}
+  .ico{width:42px;height:42px;border-radius:12px;background:#eef4ff;display:grid;place-items:center;flex:none}
+  .ico svg{width:20px;height:20px;stroke:var(--brand);fill:none;stroke-width:2}
+  .ob{background:var(--brand-grad);height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:34px 26px 40px;color:#fff;position:relative;overflow:hidden}
+  .ob .globe{position:absolute;top:70px;left:50%;transform:translateX(-50%);font-size:150px;opacity:.92;filter:drop-shadow(0 20px 40px rgba(0,0,0,.3))}
+  .ob h2{font-size:29px;font-weight:800;line-height:1.15;letter-spacing:-.5px}
+  .ob p{color:rgba(255,255,255,.85);margin-top:12px;font-size:14.5px;line-height:1.6}
+  .dots3{display:flex;gap:7px;margin:24px 0 20px}
+  .dots3 i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4)}
+  .dots3 i.on{width:22px;background:#fff;border-radius:999px}
+  .otp{display:flex;gap:9px;justify-content:space-between}
+  .otp .cell{flex:1;height:54px;border:1.5px solid var(--line);border-radius:14px;display:grid;place-items:center;font-size:22px;font-weight:700;color:var(--ink);background:#fff}
+  .otp .cell.on{border-color:var(--brand);box-shadow:0 0 0 3px rgba(10,132,255,.12)}
+  .label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:7px}
+  .field{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 15px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:8px}
+  .pay{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:14px;background:#fff;cursor:pointer}
+  .pay.sel{border-color:var(--brand);box-shadow:0 0 0 3px rgba(10,132,255,.1)}
+  .pay .radio{width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;display:grid;place-items:center;margin-left:auto}
+  .pay.sel .radio{border-color:var(--brand)}
+  .pay .radio i{width:10px;height:10px;border-radius:50%;background:var(--brand);display:none}
+  .pay.sel .radio i{display:block}
+  .brandmark{width:40px;height:26px;border-radius:5px;display:grid;place-items:center;font-size:9px;font-weight:800;color:#fff;line-height:1.1;text-align:center}
+  .success-ico{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:grid;place-items:center;box-shadow:0 16px 36px -8px rgba(22,163,74,.5)}
+  .success-ico svg{width:48px;height:48px;stroke:#fff;stroke-width:3;fill:none}
+  .lang{display:flex;gap:8px;flex-wrap:wrap}
+  .lang span{padding:6px 13px;border-radius:10px;font-size:13px;font-weight:600;background:#fff;color:var(--muted);border:1px solid var(--line);cursor:pointer}
+  .lang span.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .sec-h{font-size:15px;font-weight:700;color:var(--ink);margin:18px 2px 12px}
+  .seg{display:flex;background:#e9eef5;border-radius:14px;padding:4px;margin:18px 0 16px;gap:4px}
+  .seg span{flex:1;text-align:center;padding:10px 4px;border-radius:10px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;transition:.15s}
+  .seg span.on{background:#fff;color:var(--brand);box-shadow:0 2px 6px rgba(15,23,42,.1)}
+  .seg span:active{transform:scale(.96)}
+  #segWrap{touch-action:pan-y}
+  @keyframes segslide{from{opacity:.35;transform:translateX(var(--sx,16px))}to{opacity:1;transform:translateX(0)}}
+  .filt{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .filt span{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;background:#fff;color:var(--muted);cursor:pointer;border:1px solid var(--line)}
+  .filt span.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:11px 20px;border-radius:14px;font-size:13px;font-weight:600;opacity:0;transition:.3s;z-index:80;white-space:nowrap;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div class="logo-row">
+    <div class="logo-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 13h5l-1 9 9-12h-5l2-8z" fill="#fff"/></svg></div>
+    <h1>ParvozSIM — Interaktiv prototip</h1>
+  </div>
+  <p>Tugmalar, kartalar va pastki menyuni bosib sinab ko'ring</p>
+  <div class="hint">👆 Bosib o'tiladigan: tugmalar · paketlar · pastki menyu · ‹ orqaga</div><br>
+  <button class="reset" onclick="resetFlow()">↺ Boshidan boshlash</button>
+</div>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="viewport" id="vp">
+
+    <!-- ===== STATUS BAR TEMPLATE injected per page ===== -->
+
+    <!-- 1 ONBOARDING -->
+    <div class="page active" id="onboarding">
+      <div class="ob">
+        <div class="globe">🌍</div>
+        <div class="dots3"><i class="on"></i><i></i><i></i></div>
+        <h2>Dunyo bo'ylab<br>internetga ulaning</h2>
+        <p>Plastik SIM kartasiz. 180+ davlatda bir necha soniyada eSIM o'rnating va sayohatda doimo aloqada bo'ling.</p>
+        <button class="btn" style="background:#fff;color:var(--brand);margin-top:24px;box-shadow:none" onclick="go('login')">Boshlash</button>
+        <p style="text-align:center;margin-top:16px;font-size:13px">Akkauntingiz bormi? <b style="color:#fff;cursor:pointer" onclick="go('login')">Kirish</b></p>
+      </div>
+    </div>
+
+    <!-- 2 LOGIN -->
+    <div class="page" id="login">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll">
+        <div class="h-pad" style="padding-top:24px"><div class="title-lg">Telefon raqamingiz</div><div class="sub" style="margin-top:8px">+998 90 ••• raqamiga SMS-kod yuboramiz</div></div>
+        <div class="label">Telefon raqami</div>
+        <div class="field" style="margin-bottom:24px"><b style="color:var(--ink)">🇺🇿 +998</b><span style="color:var(--ink)">90 123 45 67</span></div>
+        <div class="label">Tasdiqlash kodi</div>
+        <div class="otp" style="margin-bottom:14px"><div class="cell on">5</div><div class="cell">2</div><div class="cell">9</div><div class="cell">8</div><div class="cell">1</div><div class="cell">4</div></div>
+        <div class="sub" style="text-align:center;margin-bottom:24px">Kodni qayta yuborish · <b style="color:var(--brand)">00:42</b></div>
+      </div>
+      <div class="foot"><button class="btn" onclick="go('home')">Tasdiqlash</button></div>
+    </div>
+
+    <!-- 3 HOME -->
+    <div class="page" id="home">
+      <div class="status on-brand"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="hero">
+        <div class="row between" style="margin-bottom:16px">
+          <div><div style="font-size:13px;opacity:.85">Assalomu alaykum 👋</div><div style="font-size:18px;font-weight:700">Jahongir</div></div>
+          <div class="lang"><span class="on" style="background:rgba(255,255,255,.25);color:#fff;border:none">UZ</span></div>
+        </div>
+        <div class="balance-card tap" onclick="go('esims')">
+          <div class="row between" style="margin-bottom:6px"><div style="font-size:12px;opacity:.9">📶 Faol eSIM · Turkiya 🇹🇷</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff">11 kun qoldi</span></div>
+          <div class="row between" style="align-items:flex-end"><div style="font-size:24px;font-weight:800">1.8 <span style="font-size:14px;font-weight:600;opacity:.85">GB qoldi</span></div><span style="font-size:12px;opacity:.85">3 GB dan</span></div>
+          <div style="height:6px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-top:10px"><div style="width:60%;height:100%;background:#fff"></div></div>
+        </div>
+      </div>
+      <div class="scroll" style="padding-top:16px">
+        <div class="search" onclick="go('country')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> Davlat yoki mintaqani qidiring</div>
+
+        <!-- coverage segmented filter -->
+        <div class="seg" id="segTabs">
+          <span class="on" onclick="seg(this,'local')">📍 Mahalliy</span>
+          <span onclick="seg(this,'regional')">🌐 Mintaqaviy</span>
+          <span onclick="seg(this,'global')">🌍 Global</span>
+        </div>
+        <div class="mini muted" style="text-align:center;margin:-6px 0 12px;opacity:.6">‹ chap-o'ngga suring ›</div>
+
+        <div id="segWrap">
+        <!-- MAHALLIY (local) -->
+        <div class="seg-pane" id="seg-local">
+          <div class="mini muted" style="margin:2px 0 12px">Bitta davlat uchun · eng arzon</div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇹🇷</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Turkiya</div><div class="mini muted">12 ta paket · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">28 000 dan</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇦🇪</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">BAA</div><div class="mini muted">9 ta paket · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">35 000 dan</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇹🇭</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Tailand</div><div class="mini muted">8 ta paket</div></div><div class="price mini" style="color:var(--brand)">31 000 dan</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="go('country')"><div class="flag" style="font-size:30px">🇺🇸</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">AQSh</div><div class="mini muted">10 ta paket</div></div><div class="price mini" style="color:var(--brand)">42 000 dan</div></div>
+        </div>
+
+        <!-- MINTAQAVIY (regional) -->
+        <div class="seg-pane" id="seg-regional" hidden>
+          <div class="mini muted" style="margin:2px 0 12px">Bir nechta qo'shni davlat — bitta paket</div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇪🇺</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yevropa · 36 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">149 000</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🌏</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Osiyo · 18 davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">189 000</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="go('country')"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yaqin Sharq · 14 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">159 000</div></div>
+        </div>
+
+        <!-- GLOBAL -->
+        <div class="seg-pane" id="seg-global" hidden>
+          <div class="mini muted" style="margin:2px 0 12px">Butun dunyo bo'ylab — bitta eSIM</div>
+          <div class="card row gap12 tap" style="margin-bottom:10px;border:1.5px solid var(--brand)" onclick="go('country')"><div class="flag" style="font-size:30px">🌐</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Global · 130+ davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">249 000</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="go('country')"><div class="flag" style="font-size:30px">🛰️</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Global Plus · 130+ davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">399 000</div></div>
+        </div>
+        </div><!-- /segWrap -->
+      </div>
+      <div class="tabbar" data-tabs></div>
+    </div>
+
+    <!-- 4 COUNTRY -->
+    <div class="page" id="country">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll">
+        <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="flag" style="font-size:34px">🇹🇷</div><div><div class="title-lg" style="font-size:20px">Turkiya</div><div class="mini muted">Local eSIM · 4G/5G</div></div></div>
+        <div class="label" style="margin:2px 2px 8px">Muddat bo'yicha</div>
+        <div class="filt"><span class="on" onclick="dayFilter(this,'all')">Barchasi</span><span onclick="dayFilter(this,'1')">1 kun</span><span onclick="dayFilter(this,'3')">3 kun</span><span onclick="dayFilter(this,'7')">7 kun</span><span onclick="dayFilter(this,'30')">30 kun</span></div>
+
+        <div class="card pkg tap" data-days="1" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">1 GB</div><div class="mini muted">1 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">12 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="3" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">1 GB</div><div class="mini muted">3 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">19 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="7" style="border:1.5px solid var(--brand);margin-bottom:10px" onclick="go('detail')">
+          <div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">3 GB</div><div class="mini muted">7 kun amal qiladi</div></div><span class="pill" style="background:#fff5e6;color:var(--warn)">⭐ Ommabop</span></div>
+          <div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">42 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:var(--brand-grad);color:#fff;padding:9px 18px">Tanlash</span></div>
+        </div>
+        <div class="card pkg tap" data-days="7" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">1 GB</div><div class="mini muted">7 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">28 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="30" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">5 GB</div><div class="mini muted">30 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">79 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="30" style="margin-bottom:14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">10 GB</div><div class="mini muted">30 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">98 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
+      </div>
+    </div>
+
+    <!-- 5 DETAIL -->
+    <div class="page" id="detail">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll">
+        <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Paket tafsiloti</div></div>
+        <div class="card" style="margin-bottom:16px;text-align:center;background:var(--brand-grad);color:#fff"><div class="flag" style="font-size:40px">🇹🇷</div><div style="font-size:30px;font-weight:800;margin-top:6px">3 GB</div><div style="opacity:.85">Turkiya · 15 kun</div></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Tezlik</div><div class="mini muted">4G / 5G, FUP'gacha to'liq tezlik</div></div></div>
+          <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Faollashtirish</div><div class="mini muted">O'rnatilgandan so'ng / birinchi ulanishda</div></div></div>
+          <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Qo'llab-quvvatlash</div><div class="mini muted">24/7 yordam · o'rnatishda yordam</div></div></div>
+        </div>
+        <div class="card"><div class="row between mini" style="margin-bottom:8px"><span class="muted">Paket narxi</span><span style="color:var(--ink);font-weight:600">42 000 UZS</span></div><div class="row between mini" style="margin-bottom:10px"><span class="muted">Xizmat haqi</span><span style="color:var(--ink);font-weight:600">0 UZS</span></div><div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">Jami</span><span class="price" style="font-size:18px">42 000 UZS</span></div></div>
+      </div>
+      <div class="foot"><button class="btn" onclick="go('payment')">Sotib olish · 42 000 UZS</button></div>
+    </div>
+
+    <!-- 6 PAYMENT -->
+    <div class="page" id="payment">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll">
+        <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">To'lov usuli</div></div>
+        <div class="label">To'lov turini tanlang</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+          <div class="pay sel" onclick="selPay(this)"><div class="brandmark" style="background:linear-gradient(135deg,#00a3e0,#0061a8)">UZ<br>CARD</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Uzcard</div><div class="mini muted">8600 •••• •••• 4821</div></div><div class="radio"><i></i></div></div>
+          <div class="pay" onclick="selPay(this)"><div class="brandmark" style="background:linear-gradient(135deg,#16a34a,#0f7a37)">HU<br>MO</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Humo</div><div class="mini muted">9860 •••• •••• 1132</div></div><div class="radio"><i></i></div></div>
+          <div class="pay" style="border-style:dashed" onclick="toast('Yangi karta qo`shish')"><div class="brandmark" style="background:#eef4ff;color:var(--brand);font-size:18px">+</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Yangi karta qo'shish</div><div class="mini muted">Uzcard yoki Humo</div></div></div>
+        </div>
+        <div class="card"><div class="row gap12" style="margin-bottom:12px"><div class="flag">🇹🇷</div><div style="flex:1"><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">15 kun</div></div></div><div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">To'lanadi</span><span class="price" style="font-size:18px">42 000 UZS</span></div></div>
+      </div>
+      <div class="foot"><button class="btn" onclick="pay()">🔒 Xavfsiz to'lash</button></div>
+    </div>
+
+    <!-- 7 SUCCESS -->
+    <div class="page" id="success">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+        <div class="success-ico"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="title-lg" style="margin-top:26px">To'lov muvaffaqiyatli!</div>
+        <p class="sub" style="margin-top:10px;line-height:1.6;padding:0 20px">eSIM tayyor. Endi uni qurilmangizga o'rnating va internetdan foydalaning.</p>
+        <div class="card" style="width:100%;margin-top:24px;text-align:left"><div class="row between mini" style="margin-bottom:8px"><span class="muted">Buyurtma</span><span style="color:var(--ink);font-weight:600">ORD-20260604-77310</span></div><div class="row between mini" style="margin-bottom:8px"><span class="muted">Paket</span><span style="color:var(--ink);font-weight:600">Turkiya · 3 GB</span></div><div class="row between mini"><span class="muted">To'landi</span><span style="color:var(--ok);font-weight:700">42 000 UZS</span></div></div>
+      </div>
+      <div class="foot col"><button class="btn" onclick="go('esimDetail')">eSIM'ni o'rnatish</button><button class="btn btn-ghost" onclick="go('home')">Bosh sahifaga</button></div>
+    </div>
+
+    <!-- 8 ESIMS (tab) -->
+    <div class="page" id="esims">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad"><div class="title-lg">Mening eSIMlarim</div></div>
+        <div class="filt"><span class="on">Faol</span><span>Arxiv</span></div>
+        <div class="card tap" style="margin-bottom:14px" onclick="go('esimDetail')">
+          <div class="row between" style="margin-bottom:14px"><div class="row gap12"><div class="flag" style="font-size:30px">🇹🇷</div><div><div style="font-weight:700;color:var(--ink)">Turkiya · 3 GB</div><div class="mini muted">15 kundan 11 kun qoldi</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">● Faol</span></div>
+          <div style="background:#f1f5fb;border-radius:12px;padding:12px"><div class="row between mini" style="margin-bottom:7px"><span class="muted">Sarflangan</span><span style="color:var(--ink);font-weight:700">1.2 / 3 GB</span></div><div style="height:8px;background:#dfe7f2;border-radius:99px;overflow:hidden"><div style="width:40%;height:100%;background:var(--brand-grad)"></div></div></div>
+        </div>
+        <div class="card tap" onclick="go('esimDetail')"><div class="row between"><div class="row gap12"><div class="flag" style="font-size:30px">🇦🇪</div><div><div style="font-weight:700;color:var(--ink)">BAA · 5 GB</div><div class="mini muted">2 kundan keyin tugaydi</div></div></div><span class="pill" style="background:#fff5e6;color:var(--warn)">● Tugayapti</span></div><div style="background:#f1f5fb;border-radius:12px;padding:12px;margin-top:12px"><div class="row between mini" style="margin-bottom:7px"><span class="muted">Sarflangan</span><span style="color:var(--ink);font-weight:700">4.6 / 5 GB</span></div><div style="height:8px;background:#dfe7f2;border-radius:99px;overflow:hidden"><div style="width:92%;height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div></div></div>
+      </div>
+      <div class="tabbar" data-tabs></div>
+    </div>
+
+    <!-- 9 ESIM DETAIL -->
+    <div class="page" id="esimDetail">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Turkiya · 3 GB</div></div>
+        <div class="card" style="text-align:center;margin-bottom:16px"><div class="ring" style="--p:40%;margin:6px auto 0"><div class="inner"><div><div class="price" style="font-size:22px">1.8</div><div class="mini muted">GB qoldi</div></div></div></div><div class="mini muted" style="margin-top:12px">3 GB dan 1.2 GB sarflandi · 11 kun</div></div>
+        <div class="card" style="text-align:center;margin-bottom:16px"><div style="font-weight:700;color:var(--ink);margin-bottom:12px">eSIM'ni o'rnatish</div>
+          <div class="qr" style="margin:0 auto"><svg viewBox="0 0 100 100" shape-rendering="crispEdges"><rect width="100" height="100" fill="#fff"/><g fill="#0f172a"><rect x="6" y="6" width="22" height="22"/><rect x="12" y="12" width="10" height="10" fill="#fff"/><rect x="72" y="6" width="22" height="22"/><rect x="78" y="12" width="10" height="10" fill="#fff"/><rect x="6" y="72" width="22" height="22"/><rect x="12" y="78" width="10" height="10" fill="#fff"/><rect x="36" y="6" width="6" height="6"/><rect x="48" y="6" width="6" height="6"/><rect x="60" y="12" width="6" height="6"/><rect x="36" y="18" width="6" height="6"/><rect x="54" y="18" width="6" height="6"/><rect x="36" y="36" width="6" height="6"/><rect x="48" y="36" width="6" height="6"/><rect x="60" y="36" width="6" height="6"/><rect x="72" y="36" width="6" height="6"/><rect x="84" y="36" width="6" height="6"/><rect x="6" y="36" width="6" height="6"/><rect x="18" y="36" width="6" height="6"/><rect x="36" y="48" width="6" height="6"/><rect x="60" y="48" width="6" height="6"/><rect x="84" y="48" width="6" height="6"/><rect x="48" y="60" width="6" height="6"/><rect x="72" y="60" width="6" height="6"/><rect x="36" y="72" width="6" height="6"/><rect x="48" y="72" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="84" y="72" width="6" height="6"/><rect x="60" y="84" width="6" height="6"/><rect x="48" y="84" width="6" height="6"/><rect x="84" y="84" width="6" height="6"/></g></svg></div>
+          <div class="mini muted" style="margin-top:12px">Sozlamalar → Mobil aloqa → eSIM qo'shish</div>
+          <button class="btn btn-ghost" style="margin-top:14px;padding:12px" onclick="toast('Kod nusxalandi ✓')">Qo'lda kod kiritish</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 ORDERS (tab) -->
+    <div class="page" id="orders">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad"><div class="title-lg">Buyurtmalar</div></div>
+        <div class="card" style="margin-bottom:12px"><div class="row between"><div class="row gap12"><div class="flag">🇹🇷</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">04.06.2026 · ORD-...77310</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Uzcard</span><span class="price">42 000 UZS</span></div></div>
+        <div class="card" style="margin-bottom:12px"><div class="row between"><div class="row gap12"><div class="flag">🇦🇪</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">BAA · 5 GB</div><div class="mini muted">28.05.2026</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Humo</span><span class="price">95 000 UZS</span></div></div>
+        <div class="card"><div class="row between"><div class="row gap12"><div class="flag">🇦🇲</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Armaniston · 3 GB</div><div class="mini muted">01.06.2026</div></div></div><span class="pill" style="background:#fde8e8;color:var(--danger)">Xato</span></div><div class="row between tap" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px" onclick="go('payment')"><span class="mini" style="color:var(--danger);font-weight:600">To'lov amalga oshmadi · Qaytadan urinish ›</span></div></div>
+      </div>
+      <div class="tabbar" data-tabs></div>
+    </div>
+
+    <!-- 11 PROFILE (tab) -->
+    <div class="page" id="profile">
+      <div class="status on-brand"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="hero" style="padding-bottom:30px"><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px;font-weight:800">J</div><div style="text-align:center"><div style="font-size:18px;font-weight:700">Jahongir Karimov</div><div style="opacity:.85;font-size:13px">+998 90 123 45 67</div></div></div></div>
+      <div class="scroll" style="padding-top:16px">
+        <div class="card" style="margin-bottom:16px"><div class="li tap" onclick="toast('Mening kartalarim')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Mening kartalarim</div></div><div class="muted mini" style="font-weight:600">2 ta karta ›</div></div><div class="li tap" onclick="toast('Bonuslarim')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l2 5 5 .5-4 3.5 1 5-4-2.5L7 16l1-5-4-3.5 5-.5z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Bonuslarim</div></div><div class="muted mini" style="font-weight:600">2 400 ball</div></div></div>
+        <div class="label" style="margin-left:2px">Til / Language</div>
+        <div class="lang" style="margin-bottom:16px"><span class="on" onclick="setLang(this)">O'zbekcha</span><span onclick="setLang(this)">Русский</span><span onclick="setLang(this)">English</span></div>
+        <div class="card"><div class="li tap" onclick="toast('Yordam markazi')"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Yordam markazi</div><span class="muted">›</span></div><div class="li tap" onclick="toast('Qo`llab-quvvatlash')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5l-1 4z"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Qo'llab-quvvatlash</div><span class="muted">›</span></div><div class="li tap" onclick="resetFlow()"><div class="ico" style="background:#fde8e8"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><path d="M16 17l5-5-5-5M21 12H9M9 4H5v16h4"/></svg></div><div style="flex:1;font-weight:600;color:var(--danger);font-size:14px">Chiqish</div></div></div>
+      </div>
+      <div class="tabbar" data-tabs></div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+
+<script>
+  const TABS = [
+    {id:'home',   label:'Bosh sahifa', svg:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>'},
+    {id:'esims',  label:'eSIMlar',     svg:'<rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/>'},
+    {id:'orders', label:'Buyurtmalar', svg:'<path d="M6 2h9l4 4v16H6z"/><path d="M9 12h7M9 16h7"/>'},
+    {id:'profile',label:'Profil',      svg:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'},
+  ];
+  // build tab bars
+  document.querySelectorAll('[data-tabs]').forEach(bar=>{
+    const cur = bar.closest('.page').id;
+    bar.innerHTML = TABS.map(t=>`<div class="tab ${t.id===cur?'active':''}" onclick="go('${t.id}')"><svg viewBox="0 0 24 24">${t.svg}</svg>${t.label}</div>`).join('');
+  });
+
+  const TAB_IDS = TABS.map(t=>t.id);
+  let stack = ['onboarding'];
+
+  function show(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active', p.id===id));
+    const sc = document.querySelector('#'+id+' .scroll'); if(sc) sc.scrollTop = 0;
+  }
+  function go(id){
+    if(TAB_IDS.includes(id)){ stack = [id]; }   // tabs reset the stack (root level)
+    else if(stack[stack.length-1] !== id){ stack.push(id); }
+    show(id);
+  }
+  function back(){
+    if(stack.length>1){ stack.pop(); show(stack[stack.length-1]); }
+  }
+  function resetFlow(){ stack=['onboarding']; show('onboarding'); }
+  function selPay(el){ el.parentNode.querySelectorAll('.pay').forEach(p=>p.classList.remove('sel')); el.classList.add('sel'); }
+  const SEGS=['local','regional','global'];
+  let segIdx=0;
+  function setSeg(i,dir){
+    i=Math.max(0,Math.min(SEGS.length-1,i));
+    if(i===segIdx) return;
+    segIdx=i;
+    document.querySelectorAll('#segTabs span').forEach((s,idx)=>s.classList.toggle('on',idx===segIdx));
+    SEGS.forEach((k,idx)=>{ document.getElementById('seg-'+k).hidden=(idx!==segIdx); });
+    const w=document.getElementById('segWrap');
+    w.style.setProperty('--sx', dir===-1?'-16px':'16px');
+    w.style.animation='none'; void w.offsetWidth; w.style.animation='segslide .25s ease';
+  }
+  function seg(el,t){ setSeg(SEGS.indexOf(t)); }
+  // Telegram-style swipe between coverage tabs
+  (function(){
+    const w=document.getElementById('segWrap'); if(!w) return;
+    let x0=null,y0=null,swiped=false;
+    w.addEventListener('pointerdown',e=>{ x0=e.clientX; y0=e.clientY; swiped=false; });
+    w.addEventListener('pointerup',e=>{
+      if(x0===null) return; const dx=e.clientX-x0, dy=e.clientY-y0; x0=null;
+      if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.3){
+        swiped=true;                       // mark so the trailing click is ignored
+        if(dx<0) setSeg(segIdx+1,1); else setSeg(segIdx-1,-1);
+      }
+    });
+    w.addEventListener('pointercancel',()=>{ x0=null; });
+    // suppress the card click that a swipe would otherwise trigger
+    w.addEventListener('click',e=>{ if(swiped){ e.stopPropagation(); e.preventDefault(); swiped=false; } }, true);
+  })();
+  function dayFilter(el,d){ el.parentNode.querySelectorAll('span').forEach(s=>s.classList.remove('on')); el.classList.add('on'); document.querySelectorAll('#country .pkg').forEach(c=>{ c.hidden = !(d==='all' || c.dataset.days===d); }); }
+  function setLang(el){ el.parentNode.querySelectorAll('span').forEach(s=>s.classList.remove('on')); el.classList.add('on'); }
+  let payTimer;
+  function pay(){ toast('To`lov amalga oshirilmoqda…'); clearTimeout(payTimer); payTimer=setTimeout(()=>go('success'),900); }
+  let toastTimer;
+  function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),1600); }
+</script>
+</body>
+</html>
