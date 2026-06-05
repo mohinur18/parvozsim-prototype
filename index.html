@@ -155,6 +155,7 @@
   <p>Tugmalar, kartalar va pastki menyuni bosib sinab ko'ring</p>
   <div class="hint">👆 Bosib o'tiladigan: tugmalar · paketlar · pastki menyu · ‹ orqaga</div><br>
   <button class="reset" onclick="resetFlow()">↺ Boshidan boshlash</button>
+  <button class="reset" onclick="toggleEsim()">📲 Faol eSIM: bor / yo'q</button>
 </div>
 
 <div class="phone">
@@ -196,21 +197,27 @@
       <div class="hero">
         <div class="row between" style="margin-bottom:16px">
           <div><div style="font-size:13px;opacity:.85">Assalomu alaykum 👋</div><div style="font-size:18px;font-weight:700">Jahongir</div></div>
-          <div class="tap" onclick="toast('Bildirishnomalar')" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+          <div class="tap" onclick="go('notifs')" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;position:relative"><span style="position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:#ef4444;border:1.5px solid #2a8bff"></span><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         </div>
-        <div class="balance-card tap" onclick="go('esims')">
+        <div class="balance-card tap" id="esimActive" onclick="go('esims')">
           <div class="row between" style="margin-bottom:6px"><div style="font-size:12px;opacity:.9">📶 Faol eSIM · Turkiya 🇹🇷</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff">11 kun qoldi</span></div>
           <div class="row between" style="align-items:flex-end"><div style="font-size:24px;font-weight:800">1.8 <span style="font-size:14px;font-weight:600;opacity:.85">GB qoldi</span></div><span style="font-size:12px;opacity:.85">3 GB dan</span></div>
           <div style="height:6px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-top:10px"><div style="width:60%;height:100%;background:#fff"></div></div>
         </div>
+        <div class="balance-card" id="esimEmpty" hidden style="text-align:center;padding:22px 16px">
+          <div style="width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.2);display:grid;place-items:center;margin:0 auto 12px;font-size:26px">📲</div>
+          <div style="font-size:16px;font-weight:700">Hali faol eSIM yo'q</div>
+          <div style="font-size:12.5px;opacity:.85;margin-top:6px;line-height:1.5">Sayohatingiz uchun internet paketini tanlang va bir necha soniyada ulaning</div>
+          <button class="btn" style="background:#fff;color:var(--brand);box-shadow:none;margin-top:14px;padding:13px" onclick="document.querySelector('#home .scroll').scrollTo({top:260,behavior:'smooth'})">eSIM tanlash</button>
+        </div>
       </div>
       <div class="scroll" style="padding-top:16px">
-        <div class="search" onclick="go('country')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> Davlat yoki mintaqani qidiring</div>
+        <div class="search" onclick="go('searchPage')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> Davlat yoki mintaqani qidiring</div>
 
         <!-- coverage segmented filter -->
         <div class="seg" id="segTabs">
           <span class="on" onclick="seg(this,'local')">📍 Mahalliy</span>
-          <span onclick="seg(this,'regional')">🌐 Mintaqaviy</span>
+          <span onclick="seg(this,'regional')">🌍 Mintaqaviy</span>
           <span onclick="seg(this,'global')">🌍 Global</span>
         </div>
         <div class="mini muted" style="text-align:center;margin:-6px 0 12px;opacity:.6">‹ chap-o'ngga suring ›</div>
@@ -219,24 +226,24 @@
         <!-- MAHALLIY (local) -->
         <div class="seg-pane" id="seg-local">
           <div class="mini muted" style="margin:2px 0 12px">Bitta davlat uchun · eng arzon</div>
-          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇹🇷</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Turkiya</div><div class="mini muted">12 ta paket · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">28 000 dan</div></div>
-          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇦🇪</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">BAA</div><div class="mini muted">9 ta paket · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">35 000 dan</div></div>
-          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇹🇭</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Tailand</div><div class="mini muted">8 ta paket</div></div><div class="price mini" style="color:var(--brand)">31 000 dan</div></div>
-          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="go('country')"><div class="flag" style="font-size:30px">🇺🇸</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">AQSh</div><div class="mini muted">10 ta paket</div></div><div class="price mini" style="color:var(--brand)">42 000 dan</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="openDest('🇹🇷','Turkiya')"><div class="flag" style="font-size:30px">🇹🇷</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Turkiya</div><div class="mini muted">12 ta paket · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">28 000 dan</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="openDest('🇦🇪','BAA')"><div class="flag" style="font-size:30px">🇦🇪</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">BAA</div><div class="mini muted">9 ta paket · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">35 000 dan</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="openDest('🇹🇭','Tailand')"><div class="flag" style="font-size:30px">🇹🇭</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Tailand</div><div class="mini muted">8 ta paket</div></div><div class="price mini" style="color:var(--brand)">31 000 dan</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="openDest('🇺🇸','AQSh')"><div class="flag" style="font-size:30px">🇺🇸</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">AQSh</div><div class="mini muted">10 ta paket</div></div><div class="price mini" style="color:var(--brand)">42 000 dan</div></div>
         </div>
 
         <!-- MINTAQAVIY (regional) -->
         <div class="seg-pane" id="seg-regional" hidden>
           <div class="mini muted" style="margin:2px 0 12px">Bir nechta qo'shni davlat — bitta paket. Quyida qaysi davlatlar kirishi ko'rsatilgan.</div>
-          <div class="card tap" style="margin-bottom:10px" onclick="go('country')">
-            <div class="row gap12"><div class="flag" style="font-size:30px">🇪🇺</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yevropa · 36 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">149 000</div></div>
+          <div class="card tap" style="margin-bottom:10px" onclick="openDest('🌍','Yevropa','Regional · 36 davlat')">
+            <div class="row gap12"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yevropa · 36 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">149 000</div></div>
             <div class="ctry"><span>🇫🇷 Fransiya</span><span>🇩🇪 Germaniya</span><span>🇮🇹 Italiya</span><span>🇪🇸 Ispaniya</span><span>🇳🇱 Niderlandiya</span><span>🇵🇱 Polsha</span><span class="more">+30 davlat</span></div>
           </div>
-          <div class="card tap" style="margin-bottom:10px" onclick="go('country')">
-            <div class="row gap12"><div class="flag" style="font-size:30px">🌏</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Osiyo · 18 davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">189 000</div></div>
+          <div class="card tap" style="margin-bottom:10px" onclick="openDest('🌍','Osiyo','Regional · 18 davlat')">
+            <div class="row gap12"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Osiyo · 18 davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">189 000</div></div>
             <div class="ctry"><span>🇹🇭 Tailand</span><span>🇯🇵 Yaponiya</span><span>🇰🇷 J.Koreya</span><span>🇨🇳 Xitoy</span><span>🇸🇬 Singapur</span><span>🇮🇳 Hindiston</span><span class="more">+12 davlat</span></div>
           </div>
-          <div class="card tap" style="margin-bottom:14px" onclick="go('country')">
+          <div class="card tap" style="margin-bottom:14px" onclick="openDest('🌍','Yaqin Sharq','Regional · 14 davlat')">
             <div class="row gap12"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yaqin Sharq · 14 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">159 000</div></div>
             <div class="ctry"><span>🇦🇪 BAA</span><span>🇸🇦 Saudiya</span><span>🇶🇦 Qatar</span><span>🇹🇷 Turkiya</span><span>🇮🇱 Isroil</span><span>🇰🇼 Quvayt</span><span class="more">+8 davlat</span></div>
           </div>
@@ -245,8 +252,8 @@
         <!-- GLOBAL -->
         <div class="seg-pane" id="seg-global" hidden>
           <div class="mini muted" style="margin:2px 0 12px">Butun dunyo bo'ylab — bitta eSIM</div>
-          <div class="card row gap12 tap" style="margin-bottom:10px;border:1.5px solid var(--brand)" onclick="go('country')"><div class="flag" style="font-size:30px">🌐</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Global · 130+ davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">249 000</div></div>
-          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="go('country')"><div class="flag" style="font-size:30px">🛰️</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Global Plus · 130+ davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">399 000</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:10px;border:1.5px solid var(--brand)" onclick="openDest('🌍','Global','Global · 130+ davlat')"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Global · 130+ davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">249 000</div></div>
+          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="openDest('🌍','Global Plus','Global · 130+ davlat')"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Global Plus · 130+ davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">399 000</div></div>
         </div>
         </div><!-- /segWrap -->
       </div>
@@ -257,7 +264,7 @@
     <div class="page" id="country">
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="scroll">
-        <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="flag" style="font-size:34px">🇹🇷</div><div><div class="title-lg" style="font-size:20px">Turkiya</div><div class="mini muted">Local eSIM · 4G/5G</div></div></div>
+        <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="flag js-dest-flag" style="font-size:34px">🇹🇷</div><div><div class="title-lg js-dest-name" style="font-size:20px">Turkiya</div><div class="mini muted js-dest-sub">Local eSIM · 4G/5G</div></div></div>
         <div class="label" style="margin:2px 2px 8px">Muddat bo'yicha</div>
         <div class="filt"><span class="on" onclick="dayFilter(this,'all')">Barchasi</span><span onclick="dayFilter(this,'1')">1 kun</span><span onclick="dayFilter(this,'3')">3 kun</span><span onclick="dayFilter(this,'7')">7 kun</span><span onclick="dayFilter(this,'30')">30 kun</span></div>
 
@@ -278,7 +285,7 @@
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="scroll">
         <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Paket tafsiloti</div></div>
-        <div class="card" style="margin-bottom:16px;text-align:center;background:var(--brand-grad);color:#fff"><div class="flag" style="font-size:40px">🇹🇷</div><div style="font-size:30px;font-weight:800;margin-top:6px">3 GB</div><div style="opacity:.85">Turkiya · 15 kun</div></div>
+        <div class="card" style="margin-bottom:16px;text-align:center;background:var(--brand-grad);color:#fff"><div class="flag js-dest-flag" style="font-size:40px">🇹🇷</div><div style="font-size:30px;font-weight:800;margin-top:6px">3 GB</div><div style="opacity:.85"><span class="js-dest-name">Turkiya</span> · 15 kun</div></div>
         <div class="card" style="margin-bottom:16px">
           <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Tezlik</div><div class="mini muted">4G / 5G, FUP'gacha to'liq tezlik</div></div></div>
           <div class="li"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div><div style="font-weight:600;color:var(--ink);font-size:14px">Faollashtirish</div><div class="mini muted">O'rnatilgandan so'ng / birinchi ulanishda</div></div></div>
@@ -300,7 +307,7 @@
           <div class="pay" onclick="selPay(this)"><div class="brandmark" style="background:linear-gradient(135deg,#16a34a,#0f7a37)">HU<br>MO</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Humo</div><div class="mini muted">9860 •••• •••• 1132</div></div><div class="radio"><i></i></div></div>
           <div class="pay" style="border-style:dashed" onclick="toast('Yangi karta qo`shish')"><div class="brandmark" style="background:#eef4ff;color:var(--brand);font-size:18px">+</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Yangi karta qo'shish</div><div class="mini muted">Uzcard yoki Humo</div></div></div>
         </div>
-        <div class="card"><div class="row gap12" style="margin-bottom:12px"><div class="flag">🇹🇷</div><div style="flex:1"><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">15 kun</div></div></div><div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">To'lanadi</span><span class="price" style="font-size:18px">42 000 UZS</span></div></div>
+        <div class="card"><div class="row gap12" style="margin-bottom:12px"><div class="flag js-dest-flag">🇹🇷</div><div style="flex:1"><div style="font-weight:700;color:var(--ink);font-size:14px"><span class="js-dest-name">Turkiya</span> · 3 GB</div><div class="mini muted">15 kun</div></div></div><div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">To'lanadi</span><span class="price" style="font-size:18px">42 000 UZS</span></div></div>
       </div>
       <div class="foot"><button class="btn" onclick="pay()">🔒 Xavfsiz to'lash</button></div>
     </div>
@@ -312,7 +319,7 @@
         <div class="success-ico"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
         <div class="title-lg" style="margin-top:26px">To'lov muvaffaqiyatli!</div>
         <p class="sub" style="margin-top:10px;line-height:1.6;padding:0 20px">eSIM tayyor. Endi uni qurilmangizga o'rnating va internetdan foydalaning.</p>
-        <div class="card" style="width:100%;margin-top:24px;text-align:left"><div class="row between mini" style="margin-bottom:8px"><span class="muted">Buyurtma</span><span style="color:var(--ink);font-weight:600">ORD-20260604-77310</span></div><div class="row between mini" style="margin-bottom:8px"><span class="muted">Paket</span><span style="color:var(--ink);font-weight:600">Turkiya · 3 GB</span></div><div class="row between mini"><span class="muted">To'landi</span><span style="color:var(--ok);font-weight:700">42 000 UZS</span></div></div>
+        <div class="card" style="width:100%;margin-top:24px;text-align:left"><div class="row between mini" style="margin-bottom:8px"><span class="muted">Buyurtma</span><span style="color:var(--ink);font-weight:600">ORD-20260604-77310</span></div><div class="row between mini" style="margin-bottom:8px"><span class="muted">Paket</span><span style="color:var(--ink);font-weight:600"><span class="js-dest-name">Turkiya</span> · 3 GB</span></div><div class="row between mini"><span class="muted">To'landi</span><span style="color:var(--ok);font-weight:700">42 000 UZS</span></div></div>
       </div>
       <div class="foot col"><button class="btn" onclick="go('esimDetail')">eSIM'ni o'rnatish</button><button class="btn btn-ghost" onclick="go('home')">Bosh sahifaga</button></div>
     </div>
@@ -341,7 +348,7 @@
         <div class="card" style="text-align:center;margin-bottom:16px"><div style="font-weight:700;color:var(--ink);margin-bottom:12px">eSIM'ni o'rnatish</div>
           <div class="qr" style="margin:0 auto"><svg viewBox="0 0 100 100" shape-rendering="crispEdges"><rect width="100" height="100" fill="#fff"/><g fill="#0f172a"><rect x="6" y="6" width="22" height="22"/><rect x="12" y="12" width="10" height="10" fill="#fff"/><rect x="72" y="6" width="22" height="22"/><rect x="78" y="12" width="10" height="10" fill="#fff"/><rect x="6" y="72" width="22" height="22"/><rect x="12" y="78" width="10" height="10" fill="#fff"/><rect x="36" y="6" width="6" height="6"/><rect x="48" y="6" width="6" height="6"/><rect x="60" y="12" width="6" height="6"/><rect x="36" y="18" width="6" height="6"/><rect x="54" y="18" width="6" height="6"/><rect x="36" y="36" width="6" height="6"/><rect x="48" y="36" width="6" height="6"/><rect x="60" y="36" width="6" height="6"/><rect x="72" y="36" width="6" height="6"/><rect x="84" y="36" width="6" height="6"/><rect x="6" y="36" width="6" height="6"/><rect x="18" y="36" width="6" height="6"/><rect x="36" y="48" width="6" height="6"/><rect x="60" y="48" width="6" height="6"/><rect x="84" y="48" width="6" height="6"/><rect x="48" y="60" width="6" height="6"/><rect x="72" y="60" width="6" height="6"/><rect x="36" y="72" width="6" height="6"/><rect x="48" y="72" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="84" y="72" width="6" height="6"/><rect x="60" y="84" width="6" height="6"/><rect x="48" y="84" width="6" height="6"/><rect x="84" y="84" width="6" height="6"/></g></svg></div>
           <div class="mini muted" style="margin-top:12px">Sozlamalar → Mobil aloqa → eSIM qo'shish</div>
-          <button class="btn btn-ghost" style="margin-top:14px;padding:12px" onclick="toast('Kod nusxalandi ✓')">Qo'lda kod kiritish</button>
+          <button class="btn btn-ghost" style="margin-top:14px;padding:12px" onclick="go('manualCode')">Qo'lda kod kiritish</button>
         </div>
       </div>
     </div>
@@ -351,8 +358,8 @@
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="scroll" style="padding-top:18px">
         <div class="h-pad"><div class="title-lg">Buyurtmalar</div></div>
-        <div class="card" style="margin-bottom:12px"><div class="row between"><div class="row gap12"><div class="flag">🇹🇷</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">04.06.2026 · ORD-...77310</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Uzcard</span><span class="price">42 000 UZS</span></div></div>
-        <div class="card" style="margin-bottom:12px"><div class="row between"><div class="row gap12"><div class="flag">🇦🇪</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">BAA · 5 GB</div><div class="mini muted">28.05.2026</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Humo</span><span class="price">95 000 UZS</span></div></div>
+        <div class="card tap" style="margin-bottom:12px" onclick="go('orderDetail')"><div class="row between"><div class="row gap12"><div class="flag">🇹🇷</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">04.06.2026 · ORD-...77310</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Uzcard</span><span class="price">42 000 UZS</span></div></div>
+        <div class="card tap" style="margin-bottom:12px" onclick="go('orderDetail')"><div class="row between"><div class="row gap12"><div class="flag">🇦🇪</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">BAA · 5 GB</div><div class="mini muted">28.05.2026</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Humo</span><span class="price">95 000 UZS</span></div></div>
         <div class="card"><div class="row between"><div class="row gap12"><div class="flag">🇦🇲</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Armaniston · 3 GB</div><div class="mini muted">01.06.2026</div></div></div><span class="pill" style="background:#fde8e8;color:var(--danger)">Xato</span></div><div class="row between tap" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px" onclick="go('payment')"><span class="mini" style="color:var(--danger);font-weight:600">To'lov amalga oshmadi · Qaytadan urinish ›</span></div></div>
       </div>
       <div class="tabbar" data-tabs></div>
@@ -419,6 +426,65 @@
       </div>
     </div>
 
+    <!-- 14b SEARCH -->
+    <div class="page" id="searchPage">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:14px">
+        <div class="row gap8" style="margin-bottom:12px"><div class="back" onclick="back()">‹</div>
+          <div class="search" style="flex:1;cursor:text"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="searchInput" oninput="doSearch(this.value)" placeholder="Davlat nomini yozing…" autocomplete="off" style="border:none;outline:none;flex:1;font-size:14px;background:transparent;color:var(--ink)"></div>
+        </div>
+        <div class="mini muted" id="searchHint" style="margin:2px 2px 12px">Mashhur yo'nalishlar</div>
+        <div id="searchResults"></div>
+        <div id="searchEmpty" hidden style="text-align:center;padding:40px 20px;color:var(--muted)"><div style="font-size:36px">🔍</div><div style="margin-top:10px;font-weight:600">Hech narsa topilmadi</div><div class="mini" style="margin-top:4px">Boshqa nom bilan urinib ko'ring</div></div>
+      </div>
+    </div>
+
+    <!-- 15 NOTIFICATIONS -->
+    <div class="page" id="notifs">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Bildirishnomalar</div></div>
+        <div class="card" style="margin-bottom:10px"><div class="li"><div class="ico" style="background:#e7f8ee"><svg viewBox="0 0 24 24" style="stroke:var(--ok)"><path d="M5 13l4 4L19 7"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">eSIM faollashtirildi</div><div class="mini muted">Turkiya · 3 GB paketingiz tayyor</div><div class="mini muted" style="margin-top:3px;opacity:.7">2 soat oldin</div></div></div></div>
+        <div class="card" style="margin-bottom:10px"><div class="li"><div class="ico" style="background:#fff5e6"><svg viewBox="0 0 24 24" style="stroke:var(--warn)"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Trafik tugayapti</div><div class="mini muted">BAA eSIM'da atigi 0.4 GB qoldi</div><div class="mini muted" style="margin-top:3px;opacity:.7">Kecha</div></div></div></div>
+        <div class="card" style="margin-bottom:10px"><div class="li"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">To'lov muvaffaqiyatli</div><div class="mini muted">Turkiya · 3 GB · 42 000 UZS</div><div class="mini muted" style="margin-top:3px;opacity:.7">2 kun oldin</div></div></div></div>
+        <div class="card tap" onclick="go('home')"><div class="li"><div class="ico" style="background:#eef4ff;font-size:18px">🎁</div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Aksiya · 15% chegirma</div><div class="mini muted">Yevropa paketlariga 3 kun ichida</div><div class="mini muted" style="margin-top:3px;opacity:.7">3 kun oldin</div></div><span class="muted">›</span></div></div>
+      </div>
+      <div class="tabbar" data-tabs></div>
+    </div>
+
+    <!-- 16 MANUAL CODE -->
+    <div class="page" id="manualCode">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Qo'lda kod kiritish</div></div>
+        <div class="card" style="margin-bottom:16px;background:#eef4ff"><div class="mini" style="color:var(--ink);line-height:1.6">QR kodni skanerlay olmasangiz, telefon sozlamalariga quyidagi ma'lumotlarni qo'lda kiriting:<br><b>Sozlamalar → Mobil aloqa → eSIM qo'shish → Ma'lumotni qo'lda kiritish</b></div></div>
+        <div class="label">SM-DP+ manzili</div>
+        <div class="field" style="margin-bottom:14px" onclick="toast('Nusxalandi ✓')"><span style="flex:1;color:var(--ink);font-family:monospace;font-size:13px">consumer.parvozsim.global</span><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--brand);fill:none;stroke-width:2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></div>
+        <div class="label">Faollashtirish kodi</div>
+        <div class="field" style="margin-bottom:14px" onclick="toast('Nusxalandi ✓')"><span style="flex:1;color:var(--ink);font-family:monospace;font-size:13px">K2-1A4B7C-9X2Z-T8M</span><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--brand);fill:none;stroke-width:2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></div>
+        <div class="label">Tasdiqlash kodi (ixtiyoriy)</div>
+        <div class="field" style="margin-bottom:18px"><span style="flex:1;color:var(--muted);font-family:monospace;font-size:13px">— talab qilinmaydi —</span></div>
+      </div>
+      <div class="foot"><button class="btn" onclick="toast('Barcha ma`lumotlar nusxalandi ✓')">📋 Hammasini nusxalash</button></div>
+    </div>
+
+    <!-- 17 ORDER DETAIL -->
+    <div class="page" id="orderDetail">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Buyurtma tafsiloti</div></div>
+        <div class="card" style="margin-bottom:16px;text-align:center;background:var(--brand-grad);color:#fff"><div class="flag" style="font-size:38px">🇹🇷</div><div style="font-size:24px;font-weight:800;margin-top:4px">Turkiya · 3 GB</div><div style="opacity:.85;font-size:13px">15 kun · 4G/5G</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff;margin-top:10px">● To'landi</span></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="row between mini" style="margin-bottom:10px"><span class="muted">Buyurtma raqami</span><span style="color:var(--ink);font-weight:600">ORD-20260604-77310</span></div>
+          <div class="row between mini" style="margin-bottom:10px"><span class="muted">Sana</span><span style="color:var(--ink);font-weight:600">04.06.2026 · 14:22</span></div>
+          <div class="row between mini" style="margin-bottom:10px"><span class="muted">To'lov usuli</span><span style="color:var(--ink);font-weight:600">Uzcard ••4821</span></div>
+          <div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">Jami</span><span class="price" style="font-size:18px">42 000 UZS</span></div>
+        </div>
+        <div class="card tap" style="margin-bottom:16px" onclick="toast('Chek yuklab olinmoqda…')"><div class="li" style="padding:4px 0"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Chekni yuklab olish (PDF)</div><span class="muted">›</span></div></div>
+      </div>
+      <div class="foot col"><button class="btn" onclick="go('esimDetail')">eSIM'ni ko'rish</button><button class="btn btn-ghost" onclick="go('country')">Qaytadan sotib olish</button></div>
+    </div>
+
     <div class="toast" id="toast"></div>
   </div>
 </div>
@@ -447,11 +513,19 @@
     if(TAB_IDS.includes(id)){ stack = [id]; }   // tabs reset the stack (root level)
     else if(stack[stack.length-1] !== id){ stack.push(id); }
     show(id);
+    if(id==='searchPage'){ const i=document.getElementById('searchInput'); if(i){ i.value=''; doSearch(''); setTimeout(()=>i.focus(),60); } }
   }
   function back(){
     if(stack.length>1){ stack.pop(); show(stack[stack.length-1]); }
   }
   function resetFlow(){ stack=['onboarding']; show('onboarding'); }
+  function toggleEsim(){
+    const a=document.getElementById('esimActive'), e=document.getElementById('esimEmpty');
+    const showEmpty=!a.hidden;        // currently active -> switch to empty
+    a.hidden=showEmpty; e.hidden=!showEmpty;
+    if(document.querySelector('#home.active')===null) go('home');
+    toast(showEmpty?'Holat: faol eSIM yo‘q':'Holat: faol eSIM bor');
+  }
   function selPay(el){ el.parentNode.querySelectorAll('.pay').forEach(p=>p.classList.remove('sel')); el.classList.add('sel'); }
   const SEGS=['local','regional','global'];
   let segIdx=0;
@@ -488,6 +562,39 @@
   function pay(){ toast('To`lov amalga oshirilmoqda…'); clearTimeout(payTimer); payTimer=setTimeout(()=>go('success'),900); }
   let toastTimer;
   function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),1600); }
+
+  // ---- Working search ----
+  const COUNTRIES=[
+    {f:'🇹🇷',n:'Turkiya',p:'28 000'},{f:'🇦🇪',n:'BAA',p:'35 000'},{f:'🇹🇭',n:'Tailand',p:'31 000'},
+    {f:'🇺🇸',n:'AQSh',p:'42 000'},{f:'🇬🇪',n:'Gruziya',p:'24 000'},{f:'🇰🇿',n:'Qozogʻiston',p:'22 000'},
+    {f:'🇷🇺',n:'Rossiya',p:'26 000'},{f:'🇪🇬',n:'Misr',p:'33 000'},{f:'🇸🇦',n:'Saudiya Arabistoni',p:'38 000'},
+    {f:'🇩🇪',n:'Germaniya',p:'30 000'},{f:'🇫🇷',n:'Fransiya',p:'30 000'},{f:'🇮🇹',n:'Italiya',p:'30 000'},
+    {f:'🇪🇸',n:'Ispaniya',p:'30 000'},{f:'🇬🇧',n:'Buyuk Britaniya',p:'34 000'},{f:'🇯🇵',n:'Yaponiya',p:'45 000'},
+    {f:'🇰🇷',n:'Janubiy Koreya',p:'41 000'},{f:'🇨🇳',n:'Xitoy',p:'37 000'},{f:'🇮🇳',n:'Hindiston',p:'29 000'},
+    {f:'🇸🇬',n:'Singapur',p:'39 000'},{f:'🇲🇾',n:'Malayziya',p:'32 000'},{f:'🇮🇩',n:'Indoneziya',p:'33 000'},
+  ];
+  function renderSearch(list){
+    const box=document.getElementById('searchResults');
+    box.innerHTML=list.map(c=>`<div class="card row gap12 tap" style="margin-bottom:10px" onclick="openDest('${c.f}','${c.n}')"><div class="flag" style="font-size:30px">${c.f}</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">${c.n}</div><div class="mini muted">Local eSIM · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">${c.p} dan</div></div>`).join('');
+    if(window.twemoji) twemoji.parse(box,{folder:'svg',ext:'.svg'});
+  }
+  function doSearch(q){
+    q=(q||'').trim().toLowerCase();
+    const list=q? COUNTRIES.filter(c=>c.n.toLowerCase().includes(q)) : COUNTRIES;
+    document.getElementById('searchHint').textContent = q? `${list.length} ta natija` : 'Mashhur yoʻnalishlar';
+    document.getElementById('searchEmpty').hidden = list.length>0;
+    renderSearch(list);
+  }
+  doSearch('');  // populate full list on load
+
+  // ---- Selected destination (so 'Yevropa' doesn't open 'Turkiya') ----
+  let curDest={flag:'🇹🇷',name:'Turkiya',sub:'Local eSIM · 4G/5G'};
+  function applyDest(){
+    document.querySelectorAll('.js-dest-name').forEach(e=>e.textContent=curDest.name);
+    document.querySelectorAll('.js-dest-sub').forEach(e=>e.textContent=curDest.sub);
+    document.querySelectorAll('.js-dest-flag').forEach(e=>{ e.textContent=curDest.flag; if(window.twemoji) twemoji.parse(e,{folder:'svg',ext:'.svg'}); });
+  }
+  function openDest(flag,name,sub){ curDest={flag,name,sub:sub||'Local eSIM · 4G/5G'}; applyDest(); go('country'); }
 </script>
 <!-- Twemoji: bayroq va emojilar barcha qurilmada (kompyuter, Android, iPhone) bir xil rasm sifatida chiqadi -->
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
