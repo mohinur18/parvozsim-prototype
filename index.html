@@ -143,6 +143,37 @@
   .creditcard{border-radius:18px;padding:18px;color:#fff;margin-bottom:14px;position:relative;overflow:hidden}
   .creditcard .num{font-size:18px;letter-spacing:2px;margin:22px 0 14px}
   .creditcard .chip{width:34px;height:24px;border-radius:6px;background:linear-gradient(135deg,#ffe79a,#e0b54a);position:absolute;top:54px;right:18px;opacity:.9}
+
+  /* ---- Fun animations ---- */
+  @keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  .page.active .card,.page.active .creditcard,.page.active .balance-card{animation:cardIn .45s ease both}
+  .page.active .card:nth-child(2),.page.active .creditcard:nth-child(2){animation-delay:.05s}
+  .page.active .card:nth-child(3),.page.active .creditcard:nth-child(3){animation-delay:.10s}
+  .page.active .card:nth-child(4),.page.active .creditcard:nth-child(4){animation-delay:.15s}
+  .page.active .card:nth-child(5),.page.active .creditcard:nth-child(5){animation-delay:.20s}
+  .page.active .card:nth-child(n+6){animation-delay:.24s}
+
+  /* success checkmark pop + expanding ring */
+  @keyframes pop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  @keyframes ringExpand{0%{transform:scale(.7);opacity:.55}100%{transform:scale(1.9);opacity:0}}
+  .success-ico{position:relative}
+  #success.active .success-ico{animation:pop .55s cubic-bezier(.2,.8,.3,1.25) both}
+  #success.active .success-ico::before{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid #22c55e;animation:ringExpand .9s ease-out .25s both}
+
+  /* bottom tab bounce on active page */
+  @keyframes tabpop{0%{transform:scale(1)}45%{transform:scale(1.28)}100%{transform:scale(1)}}
+  .page.active .tab.active svg{animation:tabpop .4s ease}
+
+  /* pulsing notification dot */
+  @keyframes dotpulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.55)}70%{box-shadow:0 0 0 6px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
+  .ndot{animation:dotpulse 1.8s ease-out infinite}
+
+  /* button sheen */
+  @keyframes sheen{0%{left:-60%}60%,100%{left:130%}}
+  .btn{position:relative;overflow:hidden}
+  .btn::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);animation:sheen 3.2s ease-in-out infinite}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
@@ -197,7 +228,7 @@
       <div class="hero">
         <div class="row between" style="margin-bottom:16px">
           <div><div style="font-size:13px;opacity:.85">Assalomu alaykum 👋</div><div style="font-size:18px;font-weight:700">Jahongir</div></div>
-          <div class="tap" onclick="go('notifs')" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;position:relative"><span style="position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:#ef4444;border:1.5px solid #2a8bff"></span><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+          <div class="tap" onclick="go('notifs')" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;position:relative"><span class="ndot" style="position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:#ef4444;border:1.5px solid #2a8bff"></span><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         </div>
         <div class="balance-card tap" id="esimActive" onclick="go('esims')">
           <div class="row between" style="margin-bottom:6px"><div style="font-size:12px;opacity:.9">📶 Faol eSIM · Turkiya 🇹🇷</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff">11 kun qoldi</span></div>
