@@ -118,6 +118,28 @@
   .filt span.on{background:var(--brand);color:#fff;border-color:var(--brand)}
   .toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:11px 20px;border-radius:14px;font-size:13px;font-weight:600;opacity:0;transition:.3s;z-index:80;white-space:nowrap;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* country chips (regional packages) — names render on every device */
+  .ctry{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .ctry span{font-size:11px;font-weight:600;color:#475569;background:#f1f5fb;border-radius:8px;padding:4px 9px}
+  .ctry .more{color:var(--brand);background:#eef4ff;font-weight:700}
+
+  /* onboarding entry animations */
+  @keyframes floaty{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-18px)}}
+  @keyframes glowpulse{0%,100%{opacity:.35;transform:translateX(-50%) scale(1)}50%{opacity:.6;transform:translateX(-50%) scale(1.12)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+  .ob .glow{position:absolute;top:95px;left:50%;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);transform:translateX(-50%);animation:glowpulse 4.5s ease-in-out infinite;pointer-events:none}
+  #onboarding.active .globe{animation:floaty 4.5s ease-in-out infinite}
+  #onboarding.active .dots3{animation:fadeUp .6s ease both .05s}
+  #onboarding.active h2{animation:fadeUp .7s ease both .15s}
+  #onboarding.active .ob>p{animation:fadeUp .7s ease both .3s}
+  #onboarding.active .ob>.btn{animation:fadeUp .7s ease both .45s}
+  #onboarding.active .ob>p:last-of-type{animation:fadeUp .7s ease both .6s}
+
+  /* payment cards (cards page) */
+  .creditcard{border-radius:18px;padding:18px;color:#fff;margin-bottom:14px;position:relative;overflow:hidden}
+  .creditcard .num{font-size:18px;letter-spacing:2px;margin:22px 0 14px}
+  .creditcard .chip{width:34px;height:24px;border-radius:6px;background:linear-gradient(135deg,#ffe79a,#e0b54a);position:absolute;top:54px;right:18px;opacity:.9}
 </style>
 </head>
 <body>
@@ -141,6 +163,7 @@
     <!-- 1 ONBOARDING -->
     <div class="page active" id="onboarding">
       <div class="ob">
+        <div class="glow"></div>
         <div class="globe">🌍</div>
         <div class="dots3"><i class="on"></i><i></i><i></i></div>
         <h2>Dunyo bo'ylab<br>internetga ulaning</h2>
@@ -170,7 +193,7 @@
       <div class="hero">
         <div class="row between" style="margin-bottom:16px">
           <div><div style="font-size:13px;opacity:.85">Assalomu alaykum 👋</div><div style="font-size:18px;font-weight:700">Jahongir</div></div>
-          <div class="lang"><span class="on" style="background:rgba(255,255,255,.25);color:#fff;border:none">UZ</span></div>
+          <div class="tap" onclick="toast('Bildirishnomalar')" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         </div>
         <div class="balance-card tap" onclick="go('esims')">
           <div class="row between" style="margin-bottom:6px"><div style="font-size:12px;opacity:.9">📶 Faol eSIM · Turkiya 🇹🇷</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff">11 kun qoldi</span></div>
@@ -201,10 +224,19 @@
 
         <!-- MINTAQAVIY (regional) -->
         <div class="seg-pane" id="seg-regional" hidden>
-          <div class="mini muted" style="margin:2px 0 12px">Bir nechta qo'shni davlat — bitta paket</div>
-          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🇪🇺</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yevropa · 36 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">149 000</div></div>
-          <div class="card row gap12 tap" style="margin-bottom:10px" onclick="go('country')"><div class="flag" style="font-size:30px">🌏</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Osiyo · 18 davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">189 000</div></div>
-          <div class="card row gap12 tap" style="margin-bottom:14px" onclick="go('country')"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yaqin Sharq · 14 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">159 000</div></div>
+          <div class="mini muted" style="margin:2px 0 12px">Bir nechta qo'shni davlat — bitta paket. Quyida qaysi davlatlar kirishi ko'rsatilgan.</div>
+          <div class="card tap" style="margin-bottom:10px" onclick="go('country')">
+            <div class="row gap12"><div class="flag" style="font-size:30px">🇪🇺</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yevropa · 36 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">149 000</div></div>
+            <div class="ctry"><span>Fransiya</span><span>Germaniya</span><span>Italiya</span><span>Ispaniya</span><span>Niderlandiya</span><span>Polsha</span><span class="more">+30 davlat</span></div>
+          </div>
+          <div class="card tap" style="margin-bottom:10px" onclick="go('country')">
+            <div class="row gap12"><div class="flag" style="font-size:30px">🌏</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Osiyo · 18 davlat</div><div class="mini muted">10 GB · 30 kun</div></div><div class="price">189 000</div></div>
+            <div class="ctry"><span>Tailand</span><span>Yaponiya</span><span>Janubiy Koreya</span><span>Xitoy</span><span>Singapur</span><span>Hindiston</span><span class="more">+12 davlat</span></div>
+          </div>
+          <div class="card tap" style="margin-bottom:14px" onclick="go('country')">
+            <div class="row gap12"><div class="flag" style="font-size:30px">🌍</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">Yaqin Sharq · 14 davlat</div><div class="mini muted">5 GB · 30 kun</div></div><div class="price">159 000</div></div>
+            <div class="ctry"><span>BAA</span><span>Saudiya Arabistoni</span><span>Qatar</span><span>Turkiya</span><span>Isroil</span><span>Quvayt</span><span class="more">+8 davlat</span></div>
+          </div>
         </div>
 
         <!-- GLOBAL -->
@@ -328,12 +360,60 @@
       <div class="status on-brand"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="hero" style="padding-bottom:30px"><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px;font-weight:800">J</div><div style="text-align:center"><div style="font-size:18px;font-weight:700">Jahongir Karimov</div><div style="opacity:.85;font-size:13px">+998 90 123 45 67</div></div></div></div>
       <div class="scroll" style="padding-top:16px">
-        <div class="card" style="margin-bottom:16px"><div class="li tap" onclick="toast('Mening kartalarim')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Mening kartalarim</div></div><div class="muted mini" style="font-weight:600">2 ta karta ›</div></div><div class="li tap" onclick="toast('Bonuslarim')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l2 5 5 .5-4 3.5 1 5-4-2.5L7 16l1-5-4-3.5 5-.5z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Bonuslarim</div></div><div class="muted mini" style="font-weight:600">2 400 ball</div></div></div>
+        <div class="card" style="margin-bottom:16px"><div class="li tap" onclick="go('cards')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Mening kartalarim</div></div><div class="muted mini" style="font-weight:600">2 ta karta ›</div></div><div class="li tap" onclick="toast('Bonuslarim')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l2 5 5 .5-4 3.5 1 5-4-2.5L7 16l1-5-4-3.5 5-.5z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Bonuslarim</div></div><div class="muted mini" style="font-weight:600">2 400 ball</div></div></div>
         <div class="label" style="margin-left:2px">Til / Language</div>
         <div class="lang" style="margin-bottom:16px"><span class="on" onclick="setLang(this)">O'zbekcha</span><span onclick="setLang(this)">Русский</span><span onclick="setLang(this)">English</span></div>
-        <div class="card"><div class="li tap" onclick="toast('Yordam markazi')"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Yordam markazi</div><span class="muted">›</span></div><div class="li tap" onclick="toast('Qo`llab-quvvatlash')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5l-1 4z"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Qo'llab-quvvatlash</div><span class="muted">›</span></div><div class="li tap" onclick="resetFlow()"><div class="ico" style="background:#fde8e8"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><path d="M16 17l5-5-5-5M21 12H9M9 4H5v16h4"/></svg></div><div style="flex:1;font-weight:600;color:var(--danger);font-size:14px">Chiqish</div></div></div>
+        <div class="card"><div class="li tap" onclick="go('support')"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Yordam markazi</div><span class="muted">›</span></div><div class="li tap" onclick="go('support')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5l-1 4z"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Qo'llab-quvvatlash</div><span class="muted">›</span></div><div class="li tap" onclick="resetFlow()"><div class="ico" style="background:#fde8e8"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><path d="M16 17l5-5-5-5M21 12H9M9 4H5v16h4"/></svg></div><div style="flex:1;font-weight:600;color:var(--danger);font-size:14px">Chiqish</div></div></div>
       </div>
       <div class="tabbar" data-tabs></div>
+    </div>
+
+    <!-- 12 CARDS -->
+    <div class="page" id="cards">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Mening kartalarim</div></div>
+        <div class="creditcard" style="background:linear-gradient(135deg,#00a3e0,#0061a8);box-shadow:0 12px 28px -10px rgba(0,97,168,.6)">
+          <div class="chip"></div>
+          <div class="row between"><span style="font-weight:800;letter-spacing:1px">UZCARD</span><span class="pill" style="background:rgba(255,255,255,.25);color:#fff">Asosiy</span></div>
+          <div class="num">8600 •••• •••• 4821</div>
+          <div class="row between mini"><span style="opacity:.85">JAHONGIR KARIMOV</span><span style="opacity:.85">09/27</span></div>
+        </div>
+        <div class="creditcard" style="background:linear-gradient(135deg,#16a34a,#0f7a37);box-shadow:0 12px 28px -10px rgba(15,122,55,.6)">
+          <div class="chip"></div>
+          <div class="row between"><span style="font-weight:800;letter-spacing:1px">HUMO</span></div>
+          <div class="num">9860 •••• •••• 1132</div>
+          <div class="row between mini"><span style="opacity:.85">JAHONGIR KARIMOV</span><span style="opacity:.85">04/26</span></div>
+        </div>
+        <div class="pay" style="border-style:dashed" onclick="toast('Yangi karta qo`shish')"><div class="brandmark" style="background:#eef4ff;color:var(--brand);font-size:18px">+</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Yangi karta qo'shish</div><div class="mini muted">Uzcard yoki Humo</div></div></div>
+        <div class="mini muted" style="text-align:center;margin-top:16px">🔒 Karta ma'lumotlari shifrlangan holda saqlanadi</div>
+      </div>
+    </div>
+
+    <!-- 13 SUPPORT -->
+    <div class="page" id="support">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Qo'llab-quvvatlash</div></div>
+        <div class="card" style="text-align:center;margin-bottom:16px">
+          <div style="font-size:42px">💬</div>
+          <div style="font-weight:700;color:var(--ink);margin-top:6px">24/7 yordamdamiz</div>
+          <div class="mini muted" style="margin-top:4px">Savolingiz bo'lsa, biz bilan bog'laning</div>
+          <button class="btn" style="margin-top:14px" onclick="toast('Onlayn chat ochilmoqda…')">Onlayn chat boshlash</button>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="li tap" onclick="toast('Telegram: @parvozsim_bot')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 4 3 11l6 2 2 6 3-4 4 3z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Telegram bot</div><div class="mini muted">@parvozsim_bot</div></div><span class="muted">›</span></div>
+          <div class="li tap" onclick="toast('+998 71 200 00 00')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Call markaz</div><div class="mini muted">+998 71 200 00 00</div></div><span class="muted">›</span></div>
+          <div class="li tap" onclick="toast('support@parvozsim.uz')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Email</div><div class="mini muted">support@parvozsim.uz</div></div><span class="muted">›</span></div>
+        </div>
+        <div class="sec-h" style="margin:4px 2px 12px">Ko'p so'raladigan savollar</div>
+        <div class="card">
+          <div class="li tap" onclick="toast('eSIM — virtual SIM karta')"><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">eSIM nima va qanday ishlaydi?</div><span class="muted">›</span></div>
+          <div class="li tap" onclick="toast('QR kodni skaner qiling')"><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">eSIM'ni qanday o'rnataman?</div><span class="muted">›</span></div>
+          <div class="li tap" onclick="toast('Faollashtirilmagan bo`lsa — ha')"><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Pulni qaytarish mumkinmi?</div><span class="muted">›</span></div>
+          <div class="li tap" onclick="toast('iPhone XS+, ko`p Android')"><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Qaysi telefonlar eSIM'ni qo'llaydi?</div><span class="muted">›</span></div>
+        </div>
+      </div>
     </div>
 
     <div class="toast" id="toast"></div>
