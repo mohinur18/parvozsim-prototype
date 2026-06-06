@@ -189,6 +189,16 @@
   @keyframes icopop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
   .page.active .ico{animation:icopop .4s ease both}
 
+  /* chat */
+  .chat-msgs{display:flex;flex-direction:column;gap:8px;padding-bottom:6px}
+  .bubble{max-width:80%;padding:10px 13px;border-radius:16px;font-size:13.5px;line-height:1.45;animation:cardIn .3s ease both}
+  .bubble.them{background:#fff;color:var(--ink);border-bottom-left-radius:5px;align-self:flex-start;box-shadow:0 2px 8px rgba(15,23,42,.06)}
+  .bubble.me{background:var(--brand-grad);color:#fff;border-bottom-right-radius:5px;align-self:flex-end}
+  .bubble .t{display:block;font-size:10px;opacity:.6;margin-top:4px;text-align:right}
+  .chat-send{width:44px;height:44px;border-radius:50%;border:none;background:var(--brand-grad);display:grid;place-items:center;cursor:pointer;flex:none}
+  .chat-send svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2}
+  .chat-input{flex:1;border:1px solid var(--line);border-radius:999px;padding:11px 16px;font-size:14px;outline:none;background:#f4f6fa;color:var(--ink)}
+
   @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -440,8 +450,8 @@
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="scroll" style="padding-top:18px">
         <div class="h-pad"><div class="title-lg">Buyurtmalar</div></div>
-        <div class="card tap" style="margin-bottom:12px" onclick="go('orderDetail')"><div class="row between"><div class="row gap12"><div class="flag">🇹🇷</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">04.06.2026 · ORD-...77310</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Uzcard</span><span class="price">42 000 UZS</span></div></div>
-        <div class="card tap" style="margin-bottom:12px" onclick="go('orderDetail')"><div class="row between"><div class="row gap12"><div class="flag">🇦🇪</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">BAA · 5 GB</div><div class="mini muted">28.05.2026</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Humo</span><span class="price">95 000 UZS</span></div></div>
+        <div class="card tap" style="margin-bottom:12px" onclick="openOrder({flag:'🇹🇷',name:'Turkiya',gb:'3 GB',days:'15 kun',no:'ORD-20260604-77310',date:'04.06.2026 · 14:22',pay:'Uzcard ••4821',total:'42 000 UZS',esim:{flag:'🇹🇷',name:'Turkiya',left:'1.8',total:'3',used:'1.2',days:'11 kun qoldi',pct:40,installed:true}})"><div class="row between"><div class="row gap12"><div class="flag">🇹🇷</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Turkiya · 3 GB</div><div class="mini muted">04.06.2026 · ORD-...77310</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Uzcard</span><span class="price">42 000 UZS</span></div></div>
+        <div class="card tap" style="margin-bottom:12px" onclick="openOrder({flag:'🇦🇪',name:'BAA',gb:'5 GB',days:'30 kun',no:'ORD-20260528-66102',date:'28.05.2026 · 10:15',pay:'Humo ••1132',total:'95 000 UZS',esim:{flag:'🇦🇪',name:'BAA',left:'0.4',total:'5',used:'4.6',days:'2 kun qoldi',pct:92,installed:true}})"><div class="row between"><div class="row gap12"><div class="flag">🇦🇪</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">BAA · 5 GB</div><div class="mini muted">28.05.2026</div></div></div><span class="pill" style="background:#e7f8ee;color:var(--ok)">To'landi</span></div><div class="row between" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><span class="mini muted">Humo</span><span class="price">95 000 UZS</span></div></div>
         <div class="card"><div class="row between"><div class="row gap12"><div class="flag">🇦🇲</div><div><div style="font-weight:700;color:var(--ink);font-size:14px">Armaniston · 3 GB</div><div class="mini muted">01.06.2026</div></div></div><span class="pill" style="background:#fde8e8;color:var(--danger)">Xato</span></div><div class="row between tap" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px" onclick="go('payment')"><span class="mini" style="color:var(--danger);font-weight:600">To'lov amalga oshmadi · Qaytadan urinish ›</span></div></div>
       </div>
       <div class="tabbar" data-tabs></div>
@@ -491,7 +501,7 @@
           <div style="font-size:42px">💬</div>
           <div style="font-weight:700;color:var(--ink);margin-top:6px">24/7 yordamdamiz</div>
           <div class="mini muted" style="margin-top:4px">Savolingiz bo'lsa, biz bilan bog'laning</div>
-          <button class="btn" style="margin-top:14px" onclick="toast('Onlayn chat ochilmoqda…')">Onlayn chat boshlash</button>
+          <button class="btn" style="margin-top:14px" onclick="go('chat')">Onlayn chat boshlash</button>
         </div>
         <div class="card" style="margin-bottom:16px">
           <div class="li tap" onclick="toast('Telegram: @parvozsim_bot')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 4 3 11l6 2 2 6 3-4 4 3z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Telegram bot</div><div class="mini muted">@parvozsim_bot</div></div><span class="muted">›</span></div>
@@ -579,16 +589,32 @@
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="scroll" style="padding-top:18px">
         <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Buyurtma tafsiloti</div></div>
-        <div class="card" style="margin-bottom:16px;text-align:center;background:var(--brand-grad);color:#fff"><div class="flag" style="font-size:38px">🇹🇷</div><div style="font-size:24px;font-weight:800;margin-top:4px">Turkiya · 3 GB</div><div style="opacity:.85;font-size:13px">15 kun · 4G/5G</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff;margin-top:10px">● To'landi</span></div>
+        <div class="card" style="margin-bottom:16px;text-align:center;background:var(--brand-grad);color:#fff"><div class="flag" id="odFlag" style="font-size:38px">🇹🇷</div><div id="odTitle" style="font-size:24px;font-weight:800;margin-top:4px">Turkiya · 3 GB</div><div id="odSub" style="opacity:.85;font-size:13px">15 kun · 4G/5G</div><span class="pill" style="background:rgba(255,255,255,.25);color:#fff;margin-top:10px">● To'landi</span></div>
         <div class="card" style="margin-bottom:16px">
-          <div class="row between mini" style="margin-bottom:10px"><span class="muted">Buyurtma raqami</span><span style="color:var(--ink);font-weight:600">ORD-20260604-77310</span></div>
-          <div class="row between mini" style="margin-bottom:10px"><span class="muted">Sana</span><span style="color:var(--ink);font-weight:600">04.06.2026 · 14:22</span></div>
-          <div class="row between mini" style="margin-bottom:10px"><span class="muted">To'lov usuli</span><span style="color:var(--ink);font-weight:600">Uzcard ••4821</span></div>
-          <div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">Jami</span><span class="price" style="font-size:18px">42 000 UZS</span></div>
+          <div class="row between mini" style="margin-bottom:10px"><span class="muted">Buyurtma raqami</span><span id="odNo" style="color:var(--ink);font-weight:600">ORD-20260604-77310</span></div>
+          <div class="row between mini" style="margin-bottom:10px"><span class="muted">Sana</span><span id="odDate" style="color:var(--ink);font-weight:600">04.06.2026 · 14:22</span></div>
+          <div class="row between mini" style="margin-bottom:10px"><span class="muted">To'lov usuli</span><span id="odPay" style="color:var(--ink);font-weight:600">Uzcard ••4821</span></div>
+          <div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">Jami</span><span class="price" id="odTotal" style="font-size:18px">42 000 UZS</span></div>
         </div>
         <div class="card tap" style="margin-bottom:16px" onclick="toast('Chek yuklab olinmoqda…')"><div class="li" style="padding:4px 0"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Chekni yuklab olish (PDF)</div><span class="muted">›</span></div></div>
       </div>
-      <div class="foot col"><button class="btn" onclick="openEsim({flag:'🇹🇷',name:'Turkiya',left:'1.8',total:'3',used:'1.2',days:'11 kun qoldi',pct:40,installed:true})">eSIM'ni ko'rish</button><button class="btn btn-ghost" onclick="go('country')">Qaytadan sotib olish</button></div>
+      <div class="foot col"><button class="btn" onclick="viewOrderEsim()">eSIM'ni ko'rish</button><button class="btn btn-ghost" onclick="openDest(curOrder.flag,curOrder.name)">Qaytadan sotib olish</button></div>
+    </div>
+
+    <!-- 17b CHAT -->
+    <div class="page" id="chat">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="row gap12" style="flex:none;padding:6px 16px 12px;border-bottom:1px solid var(--line);background:#fff;align-items:center"><div class="back" onclick="back()">‹</div><div style="width:38px;height:38px;border-radius:50%;background:var(--brand-grad);display:grid;place-items:center;color:#fff;font-weight:800;flex:none">P</div><div style="flex:1"><div style="font-weight:700;color:var(--ink);font-size:15px">ParvozSIM yordam</div><div class="mini" style="color:var(--ok)">● Onlayn · ~1 daqiqada javob</div></div></div>
+      <div class="scroll" id="chatScroll" style="padding:14px 16px;background:var(--bg)">
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="bubble them">Assalomu alaykum! 👋 ParvozSIM yordam xizmatiga xush kelibsiz. Sizga qanday yordam bera olaman?<span class="t">09:40</span></div>
+          <div class="bubble me">Salom! eSIM o'rnatishda yordam kerak edi<span class="t">09:41</span></div>
+          <div class="bubble them">Albatta! Qaysi davlat uchun eSIM oldingiz va telefon modeli qanday? Birga hal qilamiz. 🙂<span class="t">09:41</span></div>
+        </div>
+      </div>
+      <div class="foot" style="padding:10px 14px;background:#fff;border-top:1px solid var(--line)">
+        <div class="row gap8"><input id="chatInput" class="chat-input" placeholder="Xabar yozing…" autocomplete="off" onkeydown="if(event.key==='Enter')sendChat()"><button class="chat-send" onclick="sendChat()"><svg viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button></div>
+      </div>
     </div>
 
     <!-- 18 ABOUT -->
@@ -646,6 +672,7 @@
     show(id);
     if(id==='searchPage'){ const i=document.getElementById('searchInput'); if(i){ i.value=''; doSearch(''); setTimeout(()=>i.focus(),60); } }
     if(id==='addCard'){ resetCardForm(); const i=document.getElementById('cardNum'); if(i) setTimeout(()=>i.focus(),60); }
+    if(id==='chat'){ setTimeout(()=>{ scrollChat(); const i=document.getElementById('chatInput'); if(i) i.focus(); },60); }
   }
   function back(){
     if(stack.length>1){ stack.pop(); show(stack[stack.length-1]); }
@@ -805,6 +832,37 @@
     go('esimDetail');
   }
   function topUpEsim(){ openDest(curEsim.flag, curEsim.name); }
+
+  // ---- Order detail: open the clicked order (so BAA doesn't open Turkiya) ----
+  let curOrder={flag:'🇹🇷',name:'Turkiya'};
+  function openOrder(o){
+    curOrder=o;
+    document.getElementById('odFlag').textContent=o.flag;
+    document.getElementById('odTitle').textContent=o.name+' · '+o.gb;
+    document.getElementById('odSub').textContent=o.days+' · 4G/5G';
+    document.getElementById('odNo').textContent=o.no;
+    document.getElementById('odDate').textContent=o.date;
+    document.getElementById('odPay').textContent=o.pay;
+    document.getElementById('odTotal').textContent=o.total;
+    if(window.twemoji) twemoji.parse(document.getElementById('odFlag'),{folder:'svg',ext:'.svg'});
+    go('orderDetail');
+  }
+  function viewOrderEsim(){ openEsim(curOrder.esim); }
+
+  // ---- Online chat ----
+  function escapeHtml(s){ return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function scrollChat(){ const s=document.getElementById('chatScroll'); if(s) s.scrollTop=s.scrollHeight; }
+  function sendChat(){
+    const inp=document.getElementById('chatInput'); const txt=(inp.value||'').trim(); if(!txt) return;
+    const box=document.getElementById('chatMsgs');
+    box.insertAdjacentHTML('beforeend','<div class="bubble me">'+escapeHtml(txt)+'<span class="t">hozir</span></div>');
+    inp.value=''; scrollChat();
+    setTimeout(()=>{
+      box.insertAdjacentHTML('beforeend','<div class="bubble them">Rahmat! Xabaringiz qabul qilindi 🙌 Operatorimiz bir daqiqada javob beradi.<span class="t">hozir</span></div>');
+      if(window.twemoji) twemoji.parse(box,{folder:'svg',ext:'.svg'});
+      scrollChat();
+    }, 900);
+  }
 
 </script>
 <!-- Twemoji: bayroq va emojilar barcha qurilmada (kompyuter, Android, iPhone) bir xil rasm sifatida chiqadi -->
