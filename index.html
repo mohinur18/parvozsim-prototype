@@ -173,6 +173,11 @@
   .btn{position:relative;overflow:hidden}
   .btn::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);animation:sheen 3.2s ease-in-out infinite}
 
+  /* roulette */
+  @keyframes rlland{0%{transform:scale(.9)}55%{transform:scale(1.07)}100%{transform:scale(1)}}
+  @keyframes rlglow{0%,100%{box-shadow:0 8px 26px -8px rgba(124,58,237,.6)}50%{box-shadow:0 10px 34px -6px rgba(124,58,237,.95)}}
+  .roulette{animation:rlglow 3s ease-in-out infinite}
+
   @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -245,6 +250,17 @@
       <div class="scroll" style="padding-top:16px">
         <div class="search" onclick="go('searchPage')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> Davlat yoki mintaqani qidiring</div>
 
+        <!-- creative: destination roulette -->
+        <div class="card roulette" id="roulette" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;margin:14px 0;border:none">
+          <div class="row between" style="margin-bottom:10px"><div style="font-weight:800;font-size:15px">🎰 Qayerga uchamiz?</div><div class="mini" style="opacity:.8">aylantiring · yutib oling</div></div>
+          <div class="rl-window" id="rlWin" style="background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:14px;text-align:center;margin-bottom:12px">
+            <div id="rlFlag" style="font-size:34px;line-height:1">🌍</div>
+            <div id="rlName" style="font-weight:700;margin-top:5px">Tayyormisiz?</div>
+            <div id="rlOffer" class="mini" style="opacity:.9;margin-top:3px;min-height:15px"></div>
+          </div>
+          <button class="btn" id="rlBtn" style="background:#fff;color:#4f46e5;box-shadow:none;padding:12px" onclick="spinRoulette()">🎲 Aylantirish</button>
+        </div>
+
         <!-- coverage segmented filter -->
         <div class="seg" id="segTabs">
           <span class="on" onclick="seg(this,'local')">📍 Mahalliy</span>
@@ -299,15 +315,12 @@
         <div class="label" style="margin:2px 2px 8px">Muddat bo'yicha</div>
         <div class="filt"><span class="on" onclick="dayFilter(this,'all')">Barchasi</span><span onclick="dayFilter(this,'1')">1 kun</span><span onclick="dayFilter(this,'3')">3 kun</span><span onclick="dayFilter(this,'7')">7 kun</span><span onclick="dayFilter(this,'30')">30 kun</span></div>
 
-        <div class="card pkg tap" data-days="1" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">1 GB</div><div class="mini muted">1 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">12 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
-        <div class="card pkg tap" data-days="3" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">1 GB</div><div class="mini muted">3 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">19 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
-        <div class="card pkg tap" data-days="7" style="border:1.5px solid var(--brand);margin-bottom:10px" onclick="go('detail')">
-          <div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">3 GB</div><div class="mini muted">7 kun amal qiladi</div></div><span class="pill" style="background:#fff5e6;color:var(--warn)">⭐ Ommabop</span></div>
-          <div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">42 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:var(--brand-grad);color:#fff;padding:9px 18px">Tanlash</span></div>
-        </div>
-        <div class="card pkg tap" data-days="7" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">1 GB</div><div class="mini muted">7 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">28 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
-        <div class="card pkg tap" data-days="30" style="margin-bottom:10px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">5 GB</div><div class="mini muted">30 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">79 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
-        <div class="card pkg tap" data-days="30" style="margin-bottom:14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:17px">10 GB</div><div class="mini muted">30 kun</div></div></div><div class="row between" style="margin-top:14px;align-items:flex-end"><div class="price" style="font-size:20px">98 000 <span class="mini muted">UZS</span></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:9px 18px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="1" style="margin-bottom:8px;padding:12px 14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">1 GB <span class="mini muted" style="font-weight:500">· 1 kun</span></div><div class="price" style="font-size:15px;margin-top:2px">12 000 <span class="mini muted">UZS</span></div></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:8px 16px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="3" style="margin-bottom:8px;padding:12px 14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">1 GB <span class="mini muted" style="font-weight:500">· 3 kun</span></div><div class="price" style="font-size:15px;margin-top:2px">19 000 <span class="mini muted">UZS</span></div></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:8px 16px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="7" style="border:1.5px solid var(--brand);margin-bottom:8px;padding:12px 14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">3 GB <span class="mini muted" style="font-weight:500">· 7 kun</span> <span class="pill" style="background:#fff5e6;color:var(--warn);padding:2px 8px;font-size:10px">⭐ Ommabop</span></div><div class="price" style="font-size:15px;margin-top:2px">42 000 <span class="mini muted">UZS</span></div></div><span class="pill" style="background:var(--brand-grad);color:#fff;padding:8px 16px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="7" style="margin-bottom:8px;padding:12px 14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">1 GB <span class="mini muted" style="font-weight:500">· 7 kun</span></div><div class="price" style="font-size:15px;margin-top:2px">28 000 <span class="mini muted">UZS</span></div></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:8px 16px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="30" style="margin-bottom:8px;padding:12px 14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">5 GB <span class="mini muted" style="font-weight:500">· 30 kun</span></div><div class="price" style="font-size:15px;margin-top:2px">79 000 <span class="mini muted">UZS</span></div></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:8px 16px">Tanlash</span></div></div>
+        <div class="card pkg tap" data-days="30" style="margin-bottom:14px;padding:12px 14px" onclick="go('detail')"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">10 GB <span class="mini muted" style="font-weight:500">· 30 kun</span></div><div class="price" style="font-size:15px;margin-top:2px">98 000 <span class="mini muted">UZS</span></div></div><span class="pill" style="background:#eef4ff;color:var(--brand);padding:8px 16px">Tanlash</span></div></div>
       </div>
     </div>
 
@@ -695,6 +708,33 @@
     const payAdd=document.getElementById('payAddBtn'); if(payAdd) payAdd.insertAdjacentHTML('beforebegin',payHtml);
     resetCardForm();
     back(); toast('Karta qo‘shildi ✓');
+  }
+
+  // ---- Creative: "Qayerga uchamiz?" roulette ----
+  let rlSpinning=false, rlTimer=null;
+  function spinRoulette(){
+    if(rlSpinning) return;
+    rlSpinning=true;
+    const btn=document.getElementById('rlBtn');
+    const flagEl=document.getElementById('rlFlag'), nameEl=document.getElementById('rlName'), offerEl=document.getElementById('rlOffer');
+    btn.textContent='Aylanmoqda…'; btn.style.opacity='.85'; offerEl.textContent='';
+    let ticks=0; const total=22+Math.floor(Math.random()*8); let delay=55;
+    (function tick(){
+      const c=COUNTRIES[Math.floor(Math.random()*COUNTRIES.length)];
+      flagEl.textContent=c.f; nameEl.textContent=c.n;
+      if(window.twemoji) twemoji.parse(flagEl,{folder:'svg',ext:'.svg'});
+      ticks++;
+      if(ticks>=total){
+        const disc=[10,15,20,25][Math.floor(Math.random()*4)];
+        offerEl.innerHTML='🎁 <b>-'+disc+'%</b> chegirma!';
+        btn.textContent='✈️ '+c.n+' ni ochish'; btn.style.opacity='1';
+        btn.onclick=function(){ openDest(c.f,c.n); btn.textContent='🎲 Yana aylantirish'; btn.onclick=spinRoulette; };
+        const w=document.getElementById('rlWin'); w.style.animation='none'; void w.offsetWidth; w.style.animation='rlland .45s ease';
+        rlSpinning=false; return;
+      }
+      if(ticks>total-6) delay+=40;   // ease-out near the end
+      rlTimer=setTimeout(tick, delay);
+    })();
   }
 </script>
 <!-- Twemoji: bayroq va emojilar barcha qurilmada (kompyuter, Android, iPhone) bir xil rasm sifatida chiqadi -->
