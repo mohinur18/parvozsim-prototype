@@ -173,11 +173,6 @@
   .btn{position:relative;overflow:hidden}
   .btn::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);animation:sheen 3.2s ease-in-out infinite}
 
-  /* roulette */
-  @keyframes rlland{0%{transform:scale(.9)}55%{transform:scale(1.07)}100%{transform:scale(1)}}
-  @keyframes rlglow{0%,100%{box-shadow:0 8px 26px -8px rgba(124,58,237,.6)}50%{box-shadow:0 10px 34px -6px rgba(124,58,237,.95)}}
-  .roulette{animation:rlglow 3s ease-in-out infinite}
-
   @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -249,17 +244,6 @@
       </div>
       <div class="scroll" style="padding-top:16px">
         <div class="search" onclick="go('searchPage')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> Davlat yoki mintaqani qidiring</div>
-
-        <!-- creative: destination roulette -->
-        <div class="card roulette" id="roulette" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;margin:14px 0;border:none">
-          <div class="row between" style="margin-bottom:10px"><div style="font-weight:800;font-size:15px">🎰 Qayerga uchamiz?</div><div class="mini" style="opacity:.8">aylantiring · yutib oling</div></div>
-          <div class="rl-window" id="rlWin" style="background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:14px;text-align:center;margin-bottom:12px">
-            <div id="rlFlag" style="font-size:34px;line-height:1">🌍</div>
-            <div id="rlName" style="font-weight:700;margin-top:5px">Tayyormisiz?</div>
-            <div id="rlOffer" class="mini" style="opacity:.9;margin-top:3px;min-height:15px"></div>
-          </div>
-          <button class="btn" id="rlBtn" style="background:#fff;color:#4f46e5;box-shadow:none;padding:12px" onclick="spinRoulette()">🎲 Aylantirish</button>
-        </div>
 
         <!-- coverage segmented filter -->
         <div class="seg" id="segTabs">
@@ -515,7 +499,6 @@
         <div class="card" style="margin-bottom:10px"><div class="li"><div class="ico" style="background:#e7f8ee"><svg viewBox="0 0 24 24" style="stroke:var(--ok)"><path d="M5 13l4 4L19 7"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">eSIM faollashtirildi</div><div class="mini muted">Turkiya · 3 GB paketingiz tayyor</div><div class="mini muted" style="margin-top:3px;opacity:.7">2 soat oldin</div></div></div></div>
         <div class="card" style="margin-bottom:10px"><div class="li"><div class="ico" style="background:#fff5e6"><svg viewBox="0 0 24 24" style="stroke:var(--warn)"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Trafik tugayapti</div><div class="mini muted">BAA eSIM'da atigi 0.4 GB qoldi</div><div class="mini muted" style="margin-top:3px;opacity:.7">Kecha</div></div></div></div>
         <div class="card" style="margin-bottom:10px"><div class="li"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">To'lov muvaffaqiyatli</div><div class="mini muted">Turkiya · 3 GB · 42 000 UZS</div><div class="mini muted" style="margin-top:3px;opacity:.7">2 kun oldin</div></div></div></div>
-        <div class="card tap" onclick="go('home')"><div class="li"><div class="ico" style="background:#eef4ff;font-size:18px">🎁</div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Aksiya · 15% chegirma</div><div class="mini muted">Yevropa paketlariga 3 kun ichida</div><div class="mini muted" style="margin-top:3px;opacity:.7">3 kun oldin</div></div><span class="muted">›</span></div></div>
       </div>
       <div class="tabbar" data-tabs></div>
     </div>
@@ -710,32 +693,6 @@
     back(); toast('Karta qo‘shildi ✓');
   }
 
-  // ---- Creative: "Qayerga uchamiz?" roulette ----
-  let rlSpinning=false, rlTimer=null;
-  function spinRoulette(){
-    if(rlSpinning) return;
-    rlSpinning=true;
-    const btn=document.getElementById('rlBtn');
-    const flagEl=document.getElementById('rlFlag'), nameEl=document.getElementById('rlName'), offerEl=document.getElementById('rlOffer');
-    btn.textContent='Aylanmoqda…'; btn.style.opacity='.85'; offerEl.textContent='';
-    let ticks=0; const total=22+Math.floor(Math.random()*8); let delay=55;
-    (function tick(){
-      const c=COUNTRIES[Math.floor(Math.random()*COUNTRIES.length)];
-      flagEl.textContent=c.f; nameEl.textContent=c.n;
-      if(window.twemoji) twemoji.parse(flagEl,{folder:'svg',ext:'.svg'});
-      ticks++;
-      if(ticks>=total){
-        const disc=[10,15,20,25][Math.floor(Math.random()*4)];
-        offerEl.innerHTML='🎁 <b>-'+disc+'%</b> chegirma!';
-        btn.textContent='✈️ '+c.n+' ni ochish'; btn.style.opacity='1';
-        btn.onclick=function(){ openDest(c.f,c.n); btn.textContent='🎲 Yana aylantirish'; btn.onclick=spinRoulette; };
-        const w=document.getElementById('rlWin'); w.style.animation='none'; void w.offsetWidth; w.style.animation='rlland .45s ease';
-        rlSpinning=false; return;
-      }
-      if(ticks>total-6) delay+=40;   // ease-out near the end
-      rlTimer=setTimeout(tick, delay);
-    })();
-  }
 </script>
 <!-- Twemoji: bayroq va emojilar barcha qurilmada (kompyuter, Android, iPhone) bir xil rasm sifatida chiqadi -->
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
