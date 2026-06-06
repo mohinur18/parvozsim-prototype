@@ -443,7 +443,6 @@
       <div class="scroll" style="padding-top:18px">
         <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" id="edTitle" style="font-size:19px">🇹🇷 Turkiya · 3 GB</div></div>
         <div class="card" style="text-align:center;margin-bottom:16px"><div class="ring" id="edRing" style="--p:40%;margin:6px auto 0"><div class="inner"><div><div class="price" id="edLeft" style="font-size:22px">1.8</div><div class="mini muted">GB qoldi</div></div></div></div><div class="mini muted" id="edUsage" style="margin-top:12px">3 GB dan 1.2 GB sarflandi · 11 kun</div><div class="pill" id="edStatus" style="background:#e7f8ee;color:var(--ok);margin-top:12px">✓ O'rnatilgan va ishlamoqda</div></div>
-        <button class="btn" style="margin-bottom:16px" onclick="topUpEsim()">➕ Paket qo'shish</button>
         <div class="card" id="edInstallCard" style="text-align:center"><div style="font-weight:700;color:var(--ink);margin-bottom:4px" id="edInstallTitle">eSIM'ni o'rnatish</div>
           <div class="mini muted" id="edInstallNote" style="margin-bottom:14px;line-height:1.5">QR kodni boshqa qurilma bilan skanerlang yoki pastdagi kodni qo'lda kiriting.</div>
           <div class="qr" style="margin:0 auto"><svg viewBox="0 0 100 100" shape-rendering="crispEdges"><rect width="100" height="100" fill="#fff"/><g fill="#0f172a"><rect x="6" y="6" width="22" height="22"/><rect x="12" y="12" width="10" height="10" fill="#fff"/><rect x="72" y="6" width="22" height="22"/><rect x="78" y="12" width="10" height="10" fill="#fff"/><rect x="6" y="72" width="22" height="22"/><rect x="12" y="78" width="10" height="10" fill="#fff"/><rect x="36" y="6" width="6" height="6"/><rect x="48" y="6" width="6" height="6"/><rect x="60" y="12" width="6" height="6"/><rect x="36" y="18" width="6" height="6"/><rect x="54" y="18" width="6" height="6"/><rect x="36" y="36" width="6" height="6"/><rect x="48" y="36" width="6" height="6"/><rect x="60" y="36" width="6" height="6"/><rect x="72" y="36" width="6" height="6"/><rect x="84" y="36" width="6" height="6"/><rect x="6" y="36" width="6" height="6"/><rect x="18" y="36" width="6" height="6"/><rect x="36" y="48" width="6" height="6"/><rect x="60" y="48" width="6" height="6"/><rect x="84" y="48" width="6" height="6"/><rect x="48" y="60" width="6" height="6"/><rect x="72" y="60" width="6" height="6"/><rect x="36" y="72" width="6" height="6"/><rect x="48" y="72" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="84" y="72" width="6" height="6"/><rect x="60" y="84" width="6" height="6"/><rect x="48" y="84" width="6" height="6"/><rect x="84" y="84" width="6" height="6"/></g></svg></div>
@@ -619,20 +618,6 @@
         <div class="search" style="cursor:text;margin-bottom:14px"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="compatInput" oninput="doCompat(this.value)" placeholder="Masalan: iPhone 13, Galaxy S23…" autocomplete="off" style="border:none;outline:none;flex:1;font-size:14px;background:transparent;color:var(--ink)"></div>
         <div id="compatResults"></div>
         <div id="compatEmpty" hidden style="text-align:center;padding:30px 20px;color:var(--muted)"><div style="font-size:34px">🤔</div><div style="margin-top:8px;font-weight:600">Topilmadi</div><div class="mini" style="margin-top:4px">Ishlab chiqaruvchi saytidan tekshiring yoki bizga yozing</div></div>
-      </div>
-    </div>
-
-    <!-- 17a TOPUP -->
-    <div class="page" id="topup">
-      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
-      <div class="scroll" style="padding-top:18px">
-        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Paket qo'shish</div></div>
-        <div class="card" style="margin-bottom:16px;background:var(--brand-grad);color:#fff;text-align:center"><div id="tuSummary" style="font-weight:700;font-size:16px">🇹🇷 Turkiya · 1.8 GB qoldi</div><div class="mini" style="opacity:.85;margin-top:4px">Mavjud eSIM'ga qo'shimcha trafik</div></div>
-        <div class="mini muted" style="margin:2px 2px 12px">Tanlang — darhol eSIM'ingizga qo'shiladi</div>
-        <div class="card tap" style="margin-bottom:10px;padding:14px" onclick="addData(1)"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">+1 GB</div><div class="mini muted">qisqa sayohat uchun</div></div><span class="pill" style="background:var(--brand-grad);color:#fff;padding:9px 16px">12 000 UZS</span></div></div>
-        <div class="card tap" style="margin-bottom:10px;padding:14px;border:1.5px solid var(--brand)" onclick="addData(3)"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">+3 GB <span class="pill" style="background:#fff5e6;color:var(--warn);padding:2px 8px;font-size:10px">⭐ Ommabop</span></div><div class="mini muted">eng yaxshi tanlov</div></div><span class="pill" style="background:var(--brand-grad);color:#fff;padding:9px 16px">28 000 UZS</span></div></div>
-        <div class="card tap" style="margin-bottom:10px;padding:14px" onclick="addData(5)"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">+5 GB</div><div class="mini muted">faol foydalanuvchilar</div></div><span class="pill" style="background:var(--brand-grad);color:#fff;padding:9px 16px">42 000 UZS</span></div></div>
-        <div class="card tap" style="padding:14px" onclick="addData(10)"><div class="row between"><div><div style="font-weight:800;color:var(--ink);font-size:16px">+10 GB</div><div class="mini muted">eng arzon GB narxi</div></div><span class="pill" style="background:var(--brand-grad);color:#fff;padding:9px 16px">75 000 UZS</span></div></div>
       </div>
     </div>
 
@@ -891,19 +876,6 @@
     }
     if(window.twemoji) twemoji.parse(document.getElementById('edTitle'),{folder:'svg',ext:'.svg'});
     go('esimDetail');
-  }
-  function topUpEsim(){
-    const s=document.getElementById('tuSummary');
-    s.textContent=curEsim.flag+' '+curEsim.name+' · '+curEsim.left+' GB qoldi';
-    if(window.twemoji) twemoji.parse(s,{folder:'svg',ext:'.svg'});
-    go('topup');
-  }
-  function addData(gb){
-    curEsim.total=String(parseFloat(curEsim.total)+gb);
-    curEsim.left=(parseFloat(curEsim.left)+gb).toFixed(1).replace(/\.0$/,'');
-    curEsim.pct=Math.round(parseFloat(curEsim.used)/parseFloat(curEsim.total)*100);
-    openEsim(curEsim);
-    toast('+'+gb+' GB qo‘shildi ✓');
   }
 
   // ---- Order detail: open the clicked order (so BAA doesn't open Turkiya) ----
