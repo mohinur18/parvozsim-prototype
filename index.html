@@ -227,10 +227,10 @@
         <div class="glow"></div>
         <div class="globe">🌍</div>
         <div class="dots3"><i class="on"></i><i></i><i></i></div>
-        <h2>Dunyo bo'ylab<br>internetga ulaning</h2>
-        <p>Plastik SIM kartasiz. 180+ davlatda bir necha soniyada eSIM o'rnating va sayohatda doimo aloqada bo'ling.</p>
-        <button class="btn" style="background:#fff;color:var(--brand);margin-top:24px;box-shadow:none" onclick="go('register')">Boshlash</button>
-        <p style="text-align:center;margin-top:16px;font-size:13px">Akkauntingiz bormi? <b style="color:#fff;cursor:pointer" onclick="go('login')">Kirish</b></p>
+        <h2 data-i18n="ob_title">Dunyo bo'ylab internetga ulaning</h2>
+        <p data-i18n="ob_sub">Plastik SIM kartasiz. 180+ davlatda bir necha soniyada eSIM o'rnating va sayohatda doimo aloqada bo'ling.</p>
+        <button class="btn" style="background:#fff;color:var(--brand);margin-top:24px;box-shadow:none" onclick="go('register')" data-i18n="ob_start">Boshlash</button>
+        <p style="text-align:center;margin-top:16px;font-size:13px"><span data-i18n="ob_have">Akkauntingiz bormi?</span> <b style="color:#fff;cursor:pointer" onclick="go('login')" data-i18n="ob_login">Kirish</b></p>
       </div>
     </div>
 
@@ -269,7 +269,7 @@
       <div class="status on-brand"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="hero">
         <div class="row between" style="margin-bottom:16px">
-          <div><div style="font-size:13px;opacity:.85">Assalomu alaykum 👋</div><div style="font-size:18px;font-weight:700">Jahongir</div></div>
+          <div><div style="font-size:13px;opacity:.85"><span data-i18n="home_greet">Assalomu alaykum</span> 👋</div><div style="font-size:18px;font-weight:700">Jahongir</div></div>
           <div class="tap" onclick="go('notifs')" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;position:relative"><span class="ndot" style="position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:#ef4444;border:1.5px solid #2a8bff"></span><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         </div>
         <div class="balance-card tap" id="esimActive" onclick="go('esims')">
@@ -285,13 +285,13 @@
         </div>
       </div>
       <div class="scroll" style="padding-top:16px">
-        <div class="search" onclick="go('searchPage')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> Davlat yoki mintaqani qidiring</div>
+        <div class="search" onclick="go('searchPage')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg> <span data-i18n="search_ph">Davlat yoki mintaqani qidiring</span></div>
 
         <!-- coverage segmented filter -->
         <div class="seg" id="segTabs">
-          <span class="on" onclick="seg(this,'local')">📍 Mahalliy</span>
-          <span onclick="seg(this,'regional')">🌍 Mintaqaviy</span>
-          <span onclick="seg(this,'global')">🌍 Global</span>
+          <span class="on" onclick="seg(this,'local')">📍 <span data-i18n="seg_local">Mahalliy</span></span>
+          <span onclick="seg(this,'regional')">🌍 <span data-i18n="seg_regional">Mintaqaviy</span></span>
+          <span onclick="seg(this,'global')">🌍 <span data-i18n="seg_global">Global</span></span>
         </div>
         <div class="mini muted" style="text-align:center;margin:-6px 0 12px;opacity:.6">‹ chap-o'ngga suring ›</div>
 
@@ -462,10 +462,10 @@
       <div class="status on-brand"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="hero" style="padding-bottom:30px"><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px;font-weight:800">J</div><div style="text-align:center"><div style="font-size:18px;font-weight:700">Jahongir Karimov</div><div style="opacity:.85;font-size:13px">+998 90 123 45 67</div></div></div></div>
       <div class="scroll" style="padding-top:16px">
-        <div class="card" style="margin-bottom:16px"><div class="li tap" onclick="go('cards')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Mening kartalarim</div></div><div class="muted mini" style="font-weight:600">2 ta karta ›</div></div></div>
-        <div class="label" style="margin-left:2px">Til / Language</div>
-        <div class="lang" style="margin-bottom:16px"><span class="on" onclick="setLang(this)">O'zbekcha</span><span onclick="setLang(this)">Русский</span><span onclick="setLang(this)">English</span></div>
-        <div class="card"><div class="li tap" onclick="go('support')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5l-1 4z"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Qo'llab-quvvatlash</div><span class="muted">›</span></div><div class="li tap" onclick="go('about')"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px">Ilova haqida</div><span class="muted">›</span></div><div class="li tap" onclick="resetFlow()"><div class="ico" style="background:#fde8e8"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><path d="M16 17l5-5-5-5M21 12H9M9 4H5v16h4"/></svg></div><div style="flex:1;font-weight:600;color:var(--danger);font-size:14px">Chiqish</div></div></div>
+        <div class="card" style="margin-bottom:16px"><div class="li tap" onclick="go('cards')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px" data-i18n="prof_cards">Mening kartalarim</div></div><div class="muted mini" style="font-weight:600">2 ta karta ›</div></div></div>
+        <div class="label" style="margin-left:2px" data-i18n="prof_lang">Til / Language</div>
+        <div class="lang" style="margin-bottom:16px"><span class="on" onclick="setLang(this,'uz')">O'zbekcha</span><span onclick="setLang(this,'ru')">Русский</span><span onclick="setLang(this,'en')">English</span></div>
+        <div class="card"><div class="li tap" onclick="go('support')"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5l-1 4z"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px" data-i18n="prof_support">Qo'llab-quvvatlash</div><span class="muted">›</span></div><div class="li tap" onclick="go('about')"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div><div style="flex:1;font-weight:600;color:var(--ink);font-size:14px" data-i18n="prof_about">Ilova haqida</div><span class="muted">›</span></div><div class="li tap" onclick="resetFlow()"><div class="ico" style="background:#fde8e8"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><path d="M16 17l5-5-5-5M21 12H9M9 4H5v16h4"/></svg></div><div style="flex:1;font-weight:600;color:var(--danger);font-size:14px" data-i18n="prof_logout">Chiqish</div></div></div>
       </div>
       <div class="tabbar" data-tabs></div>
     </div>
@@ -547,7 +547,7 @@
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="scroll" style="padding-top:14px">
         <div class="row gap8" style="margin-bottom:12px"><div class="back" onclick="back()">‹</div>
-          <div class="search" style="flex:1;cursor:text"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="searchInput" oninput="doSearch(this.value)" placeholder="Davlat nomini yozing…" autocomplete="off" style="border:none;outline:none;flex:1;font-size:14px;background:transparent;color:var(--ink)"></div>
+          <div class="search" style="flex:1;cursor:text"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="searchInput" oninput="doSearch(this.value)" placeholder="Davlat nomini yozing…" data-i18n-ph="search_ph2" autocomplete="off" style="border:none;outline:none;flex:1;font-size:14px;background:transparent;color:var(--ink)"></div>
         </div>
         <div class="mini muted" id="searchHint" style="margin:2px 2px 12px">Mashhur yo'nalishlar</div>
         <div id="searchResults"></div>
@@ -648,15 +648,15 @@
 
 <script>
   const TABS = [
-    {id:'home',   label:'Bosh sahifa', svg:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>'},
-    {id:'esims',  label:'eSIMlar',     svg:'<rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/>'},
-    {id:'orders', label:'Buyurtmalar', svg:'<path d="M6 2h9l4 4v16H6z"/><path d="M9 12h7M9 16h7"/>'},
-    {id:'profile',label:'Profil',      svg:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'},
+    {id:'home',   label:'Bosh sahifa', i18n:'tab_home',    svg:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>'},
+    {id:'esims',  label:'eSIMlar',     i18n:'tab_esims',   svg:'<rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/>'},
+    {id:'orders', label:'Buyurtmalar', i18n:'tab_orders',  svg:'<path d="M6 2h9l4 4v16H6z"/><path d="M9 12h7M9 16h7"/>'},
+    {id:'profile',label:'Profil',      i18n:'tab_profile', svg:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'},
   ];
   // build tab bars
   document.querySelectorAll('[data-tabs]').forEach(bar=>{
     const cur = bar.closest('.page').id;
-    bar.innerHTML = TABS.map(t=>`<div class="tab ${t.id===cur?'active':''}" onclick="go('${t.id}')"><svg viewBox="0 0 24 24">${t.svg}</svg>${t.label}</div>`).join('');
+    bar.innerHTML = TABS.map(t=>`<div class="tab ${t.id===cur?'active':''}" onclick="go('${t.id}')"><svg viewBox="0 0 24 24">${t.svg}</svg><span data-i18n="${t.i18n}">${t.label}</span></div>`).join('');
   });
 
   const TAB_IDS = TABS.map(t=>t.id);
@@ -692,7 +692,7 @@
     i=Math.max(0,Math.min(SEGS.length-1,i));
     if(i===segIdx) return;
     segIdx=i;
-    document.querySelectorAll('#segTabs span').forEach((s,idx)=>s.classList.toggle('on',idx===segIdx));
+    document.querySelectorAll('#segTabs > span').forEach((s,idx)=>s.classList.toggle('on',idx===segIdx));
     SEGS.forEach((k,idx)=>{ document.getElementById('seg-'+k).hidden=(idx!==segIdx); });
     const w=document.getElementById('segWrap');
     w.style.setProperty('--sx', dir===-1?'-16px':'16px');
@@ -716,7 +716,30 @@
     w.addEventListener('click',e=>{ if(swiped){ e.stopPropagation(); e.preventDefault(); swiped=false; } }, true);
   })();
   function dayFilter(el,d){ el.parentNode.querySelectorAll('span').forEach(s=>s.classList.remove('on')); el.classList.add('on'); document.querySelectorAll('#country .pkg').forEach(c=>{ c.hidden = !(d==='all' || c.dataset.days===d); }); }
-  function setLang(el){ el.parentNode.querySelectorAll('span').forEach(s=>s.classList.remove('on')); el.classList.add('on'); }
+  // ---- i18n (uz / ru / en) ----
+  const I18N = {
+    uz:{tab_home:'Bosh sahifa',tab_esims:'eSIMlar',tab_orders:'Buyurtmalar',tab_profile:'Profil',
+      ob_title:"Dunyo bo'ylab internetga ulaning",ob_sub:"Plastik SIM kartasiz. 180+ davlatda bir necha soniyada eSIM o'rnating va sayohatda doimo aloqada bo'ling.",ob_start:'Boshlash',ob_have:'Akkauntingiz bormi?',ob_login:'Kirish',
+      home_greet:'Assalomu alaykum',search_ph:"Davlat yoki mintaqani qidiring",search_ph2:'Davlat nomini yozing…',
+      seg_local:'Mahalliy',seg_regional:'Mintaqaviy',seg_global:'Global',
+      prof_cards:'Mening kartalarim',prof_lang:'Til / Language',prof_support:'Qo‘llab-quvvatlash',prof_about:'Ilova haqida',prof_logout:'Chiqish'},
+    ru:{tab_home:'Главная',tab_esims:'Мои eSIM',tab_orders:'Заказы',tab_profile:'Профиль',
+      ob_title:'Оставайтесь онлайн по всему миру',ob_sub:'Без пластиковой SIM. Установите eSIM за секунды в 180+ странах и будьте на связи в путешествиях.',ob_start:'Начать',ob_have:'Уже есть аккаунт?',ob_login:'Войти',
+      home_greet:'Здравствуйте',search_ph:'Поиск страны или региона',search_ph2:'Введите название страны…',
+      seg_local:'Локальный',seg_regional:'Региональный',seg_global:'Глобальный',
+      prof_cards:'Мои карты',prof_lang:'Язык / Language',prof_support:'Поддержка',prof_about:'О приложении',prof_logout:'Выйти'},
+    en:{tab_home:'Home',tab_esims:'eSIMs',tab_orders:'Orders',tab_profile:'Profile',
+      ob_title:'Stay online around the world',ob_sub:'No plastic SIM. Install an eSIM in seconds across 180+ countries and stay connected while travelling.',ob_start:'Get started',ob_have:'Have an account?',ob_login:'Log in',
+      home_greet:'Hello',search_ph:'Search a country or region',search_ph2:'Type a country name…',
+      seg_local:'Local',seg_regional:'Regional',seg_global:'Global',
+      prof_cards:'My cards',prof_lang:'Language',prof_support:'Support',prof_about:'About',prof_logout:'Log out'},
+  };
+  function applyLang(lang){
+    const d=I18N[lang]||I18N.uz; document.documentElement.lang=lang;
+    document.querySelectorAll('[data-i18n]').forEach(e=>{ const v=d[e.getAttribute('data-i18n')]; if(v!=null) e.textContent=v; });
+    document.querySelectorAll('[data-i18n-ph]').forEach(e=>{ const v=d[e.getAttribute('data-i18n-ph')]; if(v!=null) e.placeholder=v; });
+  }
+  function setLang(el,lang){ el.parentNode.querySelectorAll('span').forEach(s=>s.classList.remove('on')); el.classList.add('on'); applyLang(lang); }
   let payTimer;
   function pay(){ toast('To`lov amalga oshirilmoqda…'); clearTimeout(payTimer); payTimer=setTimeout(()=>go('success'),900); }
   let toastTimer;
