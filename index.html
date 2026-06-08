@@ -214,6 +214,13 @@
   .ubar .bar{width:100%;max-width:26px;border-radius:6px 6px 0 0;background:var(--brand-grad)}
   .ubar .d{font-size:10px;color:var(--muted)}
 
+  /* ratings & reviews */
+  .stars{color:#f59e0b;font-size:14px;letter-spacing:2px;line-height:1}
+  .stars .e{color:#e2e8f0}
+  .rbar{flex:1;height:6px;background:#eef1f5;border-radius:99px;overflow:hidden}
+  .rbar i{display:block;height:100%;background:#f59e0b;border-radius:99px}
+  .ravatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;flex:none}
+
   @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -246,6 +253,7 @@
         <p data-i18n="ob_sub">Plastik SIM kartasiz. 180+ davlatda bir necha soniyada eSIM o'rnating va sayohatda doimo aloqada bo'ling.</p>
         <button class="btn" style="background:#fff;color:var(--brand);margin-top:24px;box-shadow:none" onclick="go('register')" data-i18n="ob_start">Boshlash</button>
         <p style="text-align:center;margin-top:16px;font-size:13px"><span data-i18n="ob_have">Akkauntingiz bormi?</span> <b style="color:#fff;cursor:pointer" onclick="go('login')" data-i18n="ob_login">Kirish</b></p>
+        <p style="text-align:center;margin-top:12px"><b style="color:rgba(255,255,255,.9);cursor:pointer;font-size:13px;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px" onclick="go('home')">Mehmon sifatida ko'rish →</b></p>
       </div>
     </div>
 
@@ -352,7 +360,7 @@
     <div class="page" id="country">
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
       <div class="scroll">
-        <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="flag js-dest-flag" style="font-size:34px">🇹🇷</div><div><div class="title-lg js-dest-name" style="font-size:20px">Turkiya</div><div class="mini muted js-dest-sub">Local eSIM · 4G/5G</div></div></div>
+        <div class="h-pad row gap12" style="padding-top:18px"><div class="back" onclick="back()">‹</div><div class="flag js-dest-flag" style="font-size:34px">🇹🇷</div><div><div class="title-lg js-dest-name" style="font-size:20px">Turkiya</div><div class="mini muted js-dest-sub">Local eSIM · 4G/5G</div><div class="mini" style="color:#f59e0b;font-weight:700;margin-top:3px">★ 4.8 <span class="muted" style="font-weight:400">· 1 240 baho</span></div></div></div>
         <div class="label" style="margin:2px 2px 8px">Muddat bo'yicha</div>
         <div class="filt"><span class="on" onclick="dayFilter(this,'all')">Barchasi</span><span onclick="dayFilter(this,'1')">1 kun</span><span onclick="dayFilter(this,'3')">3 kun</span><span onclick="dayFilter(this,'7')">7 kun</span><span onclick="dayFilter(this,'30')">30 kun</span></div>
 
@@ -381,6 +389,23 @@
           <div class="row between mini" style="margin-bottom:8px"><span class="muted">Tarmoq</span><span style="color:var(--ink);font-weight:600">4G / 5G LTE</span></div>
           <div class="row between mini" style="margin-bottom:8px"><span class="muted">Operatorlar</span><span class="js-dest-ops" style="color:var(--ink);font-weight:600;text-align:right;max-width:62%">Turkcell, Vodafone</span></div>
           <div class="row between mini"><span class="muted">Qoplama hududi</span><span style="color:var(--ink);font-weight:600">Butun mamlakat</span></div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div style="font-weight:700;color:var(--ink);font-size:14px;margin-bottom:12px">⭐ Mijozlar bahosi</div>
+          <div class="row" style="gap:18px;margin-bottom:14px;align-items:center">
+            <div style="text-align:center"><div style="font-size:30px;font-weight:800;color:var(--ink);line-height:1">4.8</div><div class="stars" style="margin-top:5px">★★★★★</div><div class="mini muted" style="margin-top:5px">1 240 baho</div></div>
+            <div style="flex:1">
+              <div class="row gap8" style="margin-bottom:5px"><span class="mini muted">5</span><div class="rbar"><i style="width:88%"></i></div></div>
+              <div class="row gap8" style="margin-bottom:5px"><span class="mini muted">4</span><div class="rbar"><i style="width:9%"></i></div></div>
+              <div class="row gap8" style="margin-bottom:5px"><span class="mini muted">3</span><div class="rbar"><i style="width:2%"></i></div></div>
+              <div class="row gap8" style="margin-bottom:5px"><span class="mini muted">2</span><div class="rbar"><i style="width:1%"></i></div></div>
+              <div class="row gap8"><span class="mini muted">1</span><div class="rbar"><i style="width:1%"></i></div></div>
+            </div>
+          </div>
+          <div class="li" style="align-items:flex-start;border-top:1px solid var(--line)"><div class="ravatar" style="background:#0a84ff">A</div><div style="flex:1"><div class="row between"><span style="font-weight:600;color:var(--ink);font-size:13px">Aziz R.</span><span class="stars" style="font-size:11px">★★★★★</span></div><div class="mini muted" style="margin-top:3px">Tez ulandi, tezligi zo'r edi. Tavsiya qilaman!</div></div></div>
+          <div class="li" style="align-items:flex-start"><div class="ravatar" style="background:#16a34a">M</div><div style="flex:1"><div class="row between"><span style="font-weight:600;color:var(--ink);font-size:13px">Malika T.</span><span class="stars" style="font-size:11px">★★★★<span class="e">★</span></span></div><div class="mini muted" style="margin-top:3px">Hammasi yaxshi, faqat o'rnatishда biroz vaqt ketdi.</div></div></div>
+          <div class="li" style="align-items:flex-start"><div class="ravatar" style="background:#f59e0b">J</div><div style="flex:1"><div class="row between"><span style="font-weight:600;color:var(--ink);font-size:13px">Jasur K.</span><span class="stars" style="font-size:11px">★★★★★</span></div><div class="mini muted" style="margin-top:3px">Qulay, arzon va ishonchli. Yana olaman.</div></div></div>
+          <div class="mini tap" style="color:var(--brand);font-weight:600;text-align:center;margin-top:10px" onclick="toast('Barcha 1 240 sharh')">Barcha sharhlarni ko'rish ›</div>
         </div>
         <div class="card"><div class="row between mini" style="margin-bottom:8px"><span class="muted">Paket narxi</span><span style="color:var(--ink);font-weight:600">42 000 UZS</span></div><div class="row between mini" style="margin-bottom:10px"><span class="muted">Xizmat haqi</span><span style="color:var(--ink);font-weight:600">0 UZS</span></div><div class="row between" style="border-top:1px solid var(--line);padding-top:10px"><span style="font-weight:700;color:var(--ink)">Jami</span><span class="price" style="font-size:18px">42 000 UZS</span></div></div>
       </div>
@@ -496,7 +521,7 @@
     <!-- 11 PROFILE (tab) -->
     <div class="page" id="profile">
       <div class="status on-brand"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
-      <div class="hero" style="padding-bottom:30px"><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px;font-weight:800">J</div><div style="text-align:center"><div style="font-size:18px;font-weight:700">Jahongir Karimov</div><div style="opacity:.85;font-size:13px">+998 90 123 45 67</div></div></div></div>
+      <div class="hero" style="padding-bottom:30px"><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div id="profAvatar" style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px;font-weight:800">J</div><div style="text-align:center"><div id="profName" style="font-size:18px;font-weight:700">Jahongir Karimov</div><div style="opacity:.85;font-size:13px">+998 90 123 45 67</div><div class="tap" onclick="go('editProfile')" style="margin-top:10px;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);border-radius:999px;padding:6px 15px;font-size:12px;font-weight:600">✏️ Tahrirlash</div></div></div></div>
       <div class="scroll" style="padding-top:16px">
         <div class="card" style="margin-bottom:16px"><div class="li tap" onclick="go('cards')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px" data-i18n="prof_cards">Mening kartalarim</div></div><div class="muted mini" style="font-weight:600">2 ta karta ›</div></div><div class="li tap" onclick="go('wallet')"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14h.01"/></svg></div><div style="flex:1"><div style="font-weight:600;color:var(--ink);font-size:14px">Hamyon</div></div><div class="muted mini" style="font-weight:600">150 000 UZS ›</div></div></div>
         <div class="label" style="margin-left:2px" data-i18n="prof_lang">Til / Language</div>
@@ -731,6 +756,24 @@
       </div>
     </div>
 
+    <!-- 17g EDIT PROFILE -->
+    <div class="page" id="editProfile">
+      <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
+      <div class="scroll" style="padding-top:18px">
+        <div class="h-pad row gap12"><div class="back" onclick="back()">‹</div><div class="title-lg" style="font-size:19px">Profilni tahrirlash</div></div>
+        <div style="text-align:center;margin-bottom:18px"><div style="width:84px;height:84px;border-radius:50%;background:var(--brand-grad);display:grid;place-items:center;font-size:32px;font-weight:800;color:#fff;margin:0 auto">J</div><div class="mini tap" style="color:var(--brand);font-weight:600;margin-top:10px" onclick="toast('Rasm tanlash')">Rasmni o'zgartirish</div></div>
+        <div class="label">Ism familiya</div>
+        <div class="field" style="margin-bottom:14px"><input id="epName" value="Jahongir Karimov" autocomplete="off" style="border:none;outline:none;flex:1;font-size:15px;background:transparent;color:var(--ink)"></div>
+        <div class="label">Telefon raqami</div>
+        <div class="field" style="margin-bottom:14px;opacity:.7"><b style="color:var(--ink)">🇺🇿 +998</b><span style="color:var(--ink)">90 123 45 67</span><span class="mini muted" style="margin-left:auto">tasdiqlangan ✓</span></div>
+        <div class="label">Email <span style="font-weight:400;opacity:.6">(ixtiyoriy)</span></div>
+        <div class="field" style="margin-bottom:14px"><input id="epEmail" placeholder="email@example.com" autocomplete="off" style="border:none;outline:none;flex:1;font-size:15px;background:transparent;color:var(--ink)"></div>
+        <div class="label">Tug'ilgan sana <span style="font-weight:400;opacity:.6">(ixtiyoriy)</span></div>
+        <div class="field" style="margin-bottom:14px"><input id="epDob" placeholder="KK.OO.YYYY" autocomplete="off" style="border:none;outline:none;flex:1;font-size:15px;background:transparent;color:var(--ink)"></div>
+      </div>
+      <div class="foot"><button class="btn" onclick="saveProfile()">Saqlash</button></div>
+    </div>
+
     <!-- 18 ABOUT -->
     <div class="page" id="about">
       <div class="status"><span>9:41</span><span>📶 <span class="bat"><i></i></span></span></div>
@@ -872,7 +915,7 @@
   ];
   function renderSearch(list){
     const box=document.getElementById('searchResults');
-    box.innerHTML=list.map(c=>`<div class="card row gap12 tap" style="margin-bottom:10px" onclick="openDest('${c.f}','${c.n}')"><div class="flag" style="font-size:30px">${c.f}</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">${c.n}</div><div class="mini muted">Local eSIM · 4G/5G</div></div><div class="price mini" style="color:var(--brand)">${c.p} dan</div></div>`).join('');
+    box.innerHTML=list.map(c=>`<div class="card row gap12 tap" style="margin-bottom:10px" onclick="openDest('${c.f}','${c.n}')"><div class="flag" style="font-size:30px">${c.f}</div><div style="flex:1"><div style="font-weight:700;color:var(--ink)">${c.n}</div><div class="mini muted">Local eSIM · 4G/5G</div><div class="mini" style="color:#f59e0b;font-weight:600;margin-top:2px">★ 4.8</div></div><div class="price mini" style="color:var(--brand)">${c.p} dan</div></div>`).join('');
     if(window.twemoji) twemoji.parse(box,{folder:'svg',ext:'.svg'});
   }
   let searchSort='pop';
@@ -1024,6 +1067,12 @@
   // ---- install guide tabs + notification toggles ----
   function guideSeg(el,k){ el.parentNode.querySelectorAll('span').forEach(s=>s.classList.remove('on')); el.classList.add('on'); document.getElementById('guide-ios').hidden=(k!=='ios'); document.getElementById('guide-android').hidden=(k!=='android'); }
   function tgl(el){ el.classList.toggle('on'); }
+  function saveProfile(){
+    const n=(document.getElementById('epName').value||'Foydalanuvchi').trim();
+    document.getElementById('profName').textContent=n;
+    document.getElementById('profAvatar').textContent=(n[0]||'F').toUpperCase();
+    back(); toast('Profil saqlandi ✓');
+  }
 
   // ---- Online chat ----
   function escapeHtml(s){ return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
