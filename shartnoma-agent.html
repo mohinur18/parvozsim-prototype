@@ -71,20 +71,25 @@ ushbu shartnomani («Shartnoma») tuzdilar:</p>
 <h2>2. MOLIYAVIY SHARTLAR</h2>
 <table>
   <tr><th>Ko'rsatkich</th><th>Qiymat</th></tr>
-  <tr><td>Bonus stavkasi (komissiya) — har bir sotuvdan</td><td><span class="fill">____</span> %</td></tr>
-  <tr><td>Maksimal chegirma stavkasi — Agent mijozga bera oladi</td><td><span class="fill">____</span> %</td></tr>
+  <tr><td>Agent chegirma stavkasi (mahsulotning amaldagi narxidan)</td><td><b>30% gacha</b></td></tr>
+  <tr><td>Mijozga beriladigan chegirma</td><td>Agent mustaqil belgilaydi (0% dan 30% gacha)</td></tr>
+  <tr><td>Agentning daromadi (bonus)</td><td>30% chegirmadan mijozga berilgan qism ayirilganidan keyingi qoldiq</td></tr>
   <tr><td>Hisob-kitob valyutasi</td><td>O'zbekiston so'mi (UZS)</td></tr>
-  <tr><td>Bonusni to'lash davriyligi</td><td><span class="fill">__________</span> (masalan: oyiga 1 marta)</td></tr>
-  <tr><td>Minimal yechib olish summasi</td><td><span class="fill">____________</span> so'm</td></tr>
+  <tr><td>Bonusni to'lash davriyligi</td><td>Agent talabi asosida (oyiga 1 martadan ko'p emas)</td></tr>
+  <tr><td>Minimal yechib olish summasi</td><td>100 000 so'm</td></tr>
+  <tr><td>Bonus to'lov muddati</td><td>3 (uch) bank ish kuni</td></tr>
 </table>
 <ol>
+  <li>Agentga mahsulotning amaldagi (e'lon qilingan) narxidan <b>30% gacha</b> chegirma taqdim etiladi.
+  Agent ushbu chegirmaning qancha qismini yakuniy mijozga o'tkazishni mustaqil hal qiladi; mijozga
+  berilmagan qism Agentning daromadi (bonusi) hisoblanadi.</li>
   <li>Agentning bonus hisobi (balansi) ParvozSIM tizimida avtomatik yuritiladi. Har bir muvaffaqiyatli
-  va to'langan buyurtmadan keyin bonus Agent balansiga qo'shiladi.</li>
-  <li>Agentga beriladigan bonus va chegirma stavkalari tizimda «Bonus stavkasi» va «Chegirma stavkasi»
-  sifatida sozlanadi. Tashkilot alohida mahsulot yoki davr uchun bonusni qayta belgilash (bonus override)
-  huquqini saqlab qoladi, bu haqda Agentni oldindan xabardor qiladi.</li>
-  <li>To'plangan bonus Agentning yozma (yoki kabinet orqali) talabi asosida, minimal summadan oshganda,
-  <span class="fill">____</span> bank kuni ichida Agentning bank kartasiga / hisob raqamiga o'tkaziladi.</li>
+  va to'langan buyurtmadan keyin tegishli bonus Agent balansiga qo'shiladi.</li>
+  <li>To'plangan bonus Agentning kabinet orqali talabi asosida, summasi 100 000 so'mdan oshganda,
+  3 (uch) bank ish kuni ichida Agentning bank kartasiga / hisob raqamiga o'tkaziladi.</li>
+  <li>Chegirma va bonus stavkalari ParvozSIM tizimida belgilanadi. Tashkilot alohida mahsulot yoki davr
+  uchun stavkani qayta belgilash (override) huquqini saqlab qoladi; amaldagi stavkalar Agent kabinetida
+  aks ettiriladi va Agent ularni mustaqil kuzatib boradi.</li>
   <li>Soliqlar va majburiy to'lovlar amaldagi qonunchilikka muvofiq Tomonlar tomonidan mustaqil to'lanadi.</li>
 </ol>
 
@@ -102,8 +107,8 @@ ushbu shartnomani («Shartnoma») tuzdilar:</p>
 <ol>
   <li>Agentga sotuv uchun zarur kirish huquqi (agent kabineti), narx-navo va texnik ko'mak berish.</li>
   <li>Hisoblangan bonusni o'z vaqtida va to'liq to'lash.</li>
-  <li>Narx, bonus va chegirma stavkalarini o'zgartirish huquqini saqlab qolish, o'zgarish kuchga
-  kirishidan kamida <span class="fill">____</span> kun oldin Agentni xabardor qilish.</li>
+  <li>Narx, bonus va chegirma stavkalarini o'zgartirish huquqini saqlab qolish. O'zgarishlar Agent
+  kabinetida aks ettiriladi; Agent ularni mustaqil kuzatib borishi shart va alohida ogohlantirish talab etilmaydi.</li>
   <li>Agent qoidabuzarlik qilgan taqdirda uning kabinetini vaqtincha to'xtatish yoki bloklash.</li>
 </ol>
 
@@ -118,14 +123,16 @@ ushbu shartnomani («Shartnoma») tuzdilar:</p>
 
 <h2>6. MAXFIYLIK</h2>
 <p>Tomonlar shartnoma davomida olingan tijorat, moliyaviy va mijoz ma'lumotlarini maxfiy deb tan oladi
-va shartnoma tugaganidan keyin ham <span class="fill">__</span> yil davomida uchinchi shaxslarga oshkor qilmaydi.</p>
+va shartnoma tugaganidan keyin ham 3 (uch) yil davomida uchinchi shaxslarga oshkor qilmaydi.</p>
 
 <h2>7. SHARTNOMA MUDDATI VA BEKOR QILISH</h2>
 <ol>
-  <li>Shartnoma imzolangan kundan kuchga kiradi va <span class="fill">____________</span> gacha (yoki muddatsiz) amal qiladi.</li>
-  <li>Har bir Tomon boshqa Tomonni kamida <span class="fill">____</span> kun oldin yozma ogohlantirib,
+  <li>Shartnoma imzolangan kundan kuchga kiradi va <b>1 (bir) yil</b> davomida amal qiladi. Muddat
+  tugashidan oldin biror Tomon yozma ravishda bekor qilish niyatini bildirmasa, shartnoma har safar
+  yana 1 yilga avtomatik uzaytiriladi.</li>
+  <li>Har bir Tomon boshqa Tomonni kamida 30 (o'ttiz) kun oldin yozma ogohlantirib,
   shartnomani bir tomonlama bekor qilishi mumkin.</li>
-  <li>Bekor qilinganda Tomonlar o'zaro hisob-kitobni <span class="fill">____</span> kun ichida yakunlaydi;
+  <li>Bekor qilinganda Tomonlar o'zaro hisob-kitobni 10 (o'n) kun ichida yakunlaydi;
   Agentning to'plangan haqiqiy bonusi to'liq to'lanadi.</li>
 </ol>
 
